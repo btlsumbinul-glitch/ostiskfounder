@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ostisk ফাউন্ডার কনসোল</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF7F2;--card:#FFFDF9;--line:#E7DFD2;--ink:#1B1A17;--txt:#4A4740;--mute:#857E72;--acc:#C2410C;--acc2:#FCEFE6;--ok:#2F7D4F;--okb:#E5F3EA;--warn:#B7791F;--warnb:#FBF1DC;--bad:#B42318;--badb:#FBE6E4;--blue:#2B5C8A;--blueb:#E6EEF6;--vio:#6B4FA0;--viob:#EFEAF7}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Hind Siliguri',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+header{background:var(--ink);color:#FAF7F2;padding:14px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{width:28px;height:28px;border-radius:8px;background:#F28B4B}
+header h1{font-size:18px;font-weight:600}
+header .sub{color:#B9B2A6;font-size:13px}
+.hr{margin-left:auto;display:flex;gap:12px;align-items:center}
+.who{font-size:13px;color:#D9D2C5}
+.lang{display:inline-flex;background:#2E2C28;border-radius:8px;padding:2px}
+.lang button{border:0;background:none;color:#B9B2A6;padding:3px 10px;border-radius:6px;cursor:pointer;font-size:13px}
+.lang button.on{background:#FAF7F2;color:var(--ink);font-weight:600}
+nav{display:flex;gap:4px;padding:0 16px;background:var(--ink);overflow-x:auto}
+nav a{color:#D9D2C5;text-decoration:none;padding:10px 14px;border-radius:10px 10px 0 0;font-weight:500;white-space:nowrap}
+nav a.on{background:var(--bg);color:var(--ink);font-weight:600}
+main{max-width:1200px;margin:0 auto;padding:20px 16px 60px}
+.banner{background:var(--warnb);color:#7A4E0E;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:14px;display:none}
+.banner.info{background:var(--blueb);color:#1F4366}
+.banner button{margin-left:8px;border:1px solid currentColor;background:transparent;color:inherit;border-radius:7px;padding:1px 10px;cursor:pointer;font-size:13px}
+.xl{display:inline-flex;gap:6px;align-items:center}
+.xl button,.xl label{border:1px solid #4A463F;background:#2E2C28;color:#F3EEE6;border-radius:8px;padding:3px 10px;cursor:pointer;font-size:13px;white-space:nowrap}
+.xl button:hover,.xl label:hover{background:#3A3732}
+.xl input[type=file]{display:none}
+.mode{font-size:11.5px;padding:1px 8px;border-radius:20px;background:#3A3732;color:#D9D2C5;white-space:nowrap}
+.mode.cloud{background:#24452F;color:#BFE3CB}
+.who button{border:0;background:none;color:#F2B48A;cursor:pointer;text-decoration:underline;font-size:13px;padding:0}
+.choice{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.choice label{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:14px}
+.choice input{width:auto;margin-top:4px}
+.sumtab{font-size:13.5px;margin-top:8px}
+.sumtab td{padding:4px 10px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.row h2{font-size:20px;font-weight:600;margin-right:auto}
+.seg{display:inline-flex;background:#EFE8DC;border-radius:10px;padding:3px;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:6px 12px;border-radius:8px;cursor:pointer;color:var(--txt)}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.btn{border:0;background:var(--acc);color:#fff;padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+.btn.danger{background:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.kpi.link{cursor:pointer}.kpi.link:hover{border-color:#CDBFA9}
+.kpi .l{color:var(--mute);font-size:13px}
+.kpi .v{font-size:26px;font-weight:700;line-height:1.2;margin-top:2px}
+.kpi .d{font-size:12.5px;color:var(--mute)}
+.up{color:var(--ok)}.down{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:border-color .15s}
+.card:hover{border-color:#CDBFA9}
+.card h3{font-size:16px;font-weight:600;line-height:1.35}
+.card .meta{font-size:13px;color:var(--mute);margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card .note{font-size:13.5px;color:var(--txt);margin-top:6px;white-space:pre-wrap}
+.bar{height:7px;background:#EFE8DC;border-radius:4px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:4px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:1px 9px;border-radius:20px;white-space:nowrap}
+.p-todo{background:#EFE8DC;color:var(--txt)}.p-doing{background:var(--blueb);color:var(--blue)}.p-done{background:var(--okb);color:var(--ok)}.p-risk{background:var(--badb);color:var(--bad)}.p-test{background:var(--warnb);color:var(--warn)}.p-vio{background:var(--viob);color:var(--vio)}
+.p-high{background:var(--badb);color:var(--bad)}.p-med{background:var(--warnb);color:var(--warn)}.p-low{background:#EFE8DC;color:var(--txt)}
+.group{margin-bottom:20px}
+.group h4{font-size:14px;color:var(--mute);font-weight:600;margin-bottom:8px}
+.kanban{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.col{background:#F2ECE2;border-radius:14px;padding:10px;min-height:200px}
+.col h4{font-size:14px;font-weight:600;margin:2px 4px 10px;display:flex;justify-content:space-between}
+.col .card{margin-bottom:8px;padding:10px 12px}
+.mv{display:flex;gap:4px;margin-top:8px}
+.mv button{border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:0 8px;cursor:pointer;font-size:13px}
+table{width:100%;border-collapse:collapse;background:var(--card)}
+th{text-align:left;font-size:13px;color:var(--mute);font-weight:600;padding:9px 12px;background:#F2ECE2;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--line);font-size:14px;vertical-align:top}
+tr.click{cursor:pointer}tr.click:hover td{background:#FBF7F0}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tw{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;margin-bottom:18px}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.chart h4{font-size:14px;font-weight:600;margin-bottom:8px}
+.empty{background:var(--card);border:1px dashed #D8CCB8;border-radius:14px;padding:28px;text-align:center;color:var(--mute)}
+.sec-title{font-size:17px;font-weight:600;margin:26px 0 10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec-title .sp{margin-right:auto}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.inline input{width:150px}
+input,select,textarea{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 10px;width:100%}
+textarea{min-height:70px;resize:vertical}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:start}
+.feat h3{font-size:15.5px;font-weight:600;line-height:1.35}
+.feat .ds{font-size:13.5px;color:var(--txt);margin-top:2px}
+.feat .meta{font-size:12.5px;color:var(--mute);margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.votes{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.votes button{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:3px 9px;cursor:pointer;font-size:12.5px;white-space:nowrap}
+.votes button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.votes button:disabled{opacity:.5;cursor:not-allowed}
+.vlist{grid-column:1/-1;font-size:12.5px;color:var(--mute);display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.vchip{background:#F2ECE2;border-radius:6px;padding:1px 8px;color:var(--txt)}
+.flist{display:flex;flex-direction:column;gap:8px}
+.edit{border:0;background:none;color:var(--mute);cursor:pointer;font-size:12.5px;text-decoration:underline}
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.swot .q{border-radius:14px;padding:12px 14px;border:1px solid var(--line);background:var(--card);min-height:150px}
+.swot .q h4{font-size:15px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.swot .q li{margin:4px 0 4px 18px;font-size:14px;cursor:pointer}
+.swot .q li:hover{text-decoration:underline}
+.q.s{border-top:5px solid var(--ok)}.q.w{border-top:5px solid var(--bad)}.q.o{border-top:5px solid var(--blue)}.q.t{border-top:5px solid var(--warn)}
+.mini{border:1px solid var(--line);background:var(--bg);border-radius:7px;padding:0 8px;cursor:pointer;font-size:13px}
+#ov{position:fixed;inset:0;background:rgba(27,26,23,.45);display:none;align-items:flex-start;justify-content:center;padding:40px 12px;overflow-y:auto;z-index:10}
+#ov.show{display:flex}
+.modal{background:var(--card);border-radius:16px;width:100%;max-width:560px;padding:20px}
+.modal h3{font-size:18px;margin-bottom:12px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg .full{grid-column:1/-1}
+.fg label{font-size:13px;color:var(--mute);display:block;margin-bottom:3px}
+.mf{display:flex;gap:8px;margin-top:16px;align-items:center}
+.mf .by{font-size:12px;color:var(--mute);margin-right:auto}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:9px 16px;border-radius:10px;font-size:14px;display:none;z-index:20}
+@media(max-width:700px){.fg{grid-template-columns:1fr}.kpi .v{font-size:22px}.feat{grid-template-columns:1fr}.votes{justify-content:flex-start}.swot{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="logo"></div><div><h1 id="appTitle"></h1><div class="sub" id="appSub"></div></div><div class="hr"><span class="mode" id="mode"></span><div class="xl"><button id="xlOut" type="button"></button><label id="xlInL"><input type="file" id="xlIn" accept=".xlsx,.xls,.csv"><span id="xlInT"></span></label></div><div class="lang"><button data-lang="bn">বাংলা</button><button data-lang="en">English</button></div><div class="who" id="who"></div></div></header>
+<nav id="nav"></nav>
+<main><div class="banner" id="banner"></div><div id="view"></div></main>
+<div id="ov"><div class="modal" id="modal"></div></div>
+<div id="toast"></div>
+<script>
+/* ================= i18n ================= */
+const L={
+bn:{title:'Ostisk ফাউন্ডার কনসোল',sub:'ড্যাশবোর্ড · প্ল্যানিং · ডেভেলপমেন্ট · বিজনেস · মার্কেট রিসার্চ · এইচআর ও অ্যাকাউন্টস',
+ nav:{dashboard:'ড্যাশবোর্ড',planning:'প্ল্যানিং',development:'ডেভেলপমেন্ট',business:'বিজনেস',research:'মার্কেট রিসার্চ','hr-accounts':'এইচআর ও অ্যাকাউন্টস'},
+ loading:'লোড হচ্ছে…',saved:'সেভ হয়েছে',deleted:'মুছে ফেলা হয়েছে',saving:'সেভ হচ্ছে…',save:'সেভ',cancel:'বাতিল',del:'মুছুন',sure:'নিশ্চিত? আবার চাপুন',newP:'নতুন ',editP:'সম্পাদনা: ',
+ lastUpd:'শেষ আপডেট',someone:'কেউ একজন',readOnlyToast:'এখন শুধু দেখা যাবে — পরিবর্তন সেভ করা যাচ্ছে না',noPerm:'আপনার এই পেজে পরিবর্তনের অনুমতি নেই — শুধু দেখতে পারবেন।',quota:'ডেটাবেস পূর্ণ — পুরনো কিছু রেকর্ড মুছুন',saveFail:'সেভ করা যায়নি, আবার চেষ্টা করুন',
+ noDb:'ডেটা সংরক্ষণের সুবিধা এই ভিউতে চালু নেই। claude.ai-তে সাইন ইন করে পেজটি খুলুন।',slow:'ডেটা এখনো পৌঁছায়নি — ইন্টারনেট সংযোগ দেখুন। যা দেখছেন তা পুরনো হতে পারে।',
+ months:['জানু','ফেব্রু','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টে','অক্টো','নভে','ডিসে'],
+ // dashboard
+ dHello:'এক নজরে Ostisk',pieTitle:'ফিচারের অবস্থা',pieLive:'চালু (ইমপ্লিমেন্টেড)',piePartial:'আংশিক চালু',pieBuilding:'বানানো হচ্ছে',pieDecided:'সিদ্ধান্ত হয়েছে, বাকি',pieNever:'করবো না',pieUndecided:'সিদ্ধান্তহীন',pieTotal:'মোট ফিচার',toPlan:'→ প্ল্যানিং',toDev:'→ ডেভেলপমেন্ট',inPlan:'প্ল্যানিং-এ আছে',inDev:'ডেভেলপমেন্টে',dBiz:'সক্রিয় পেইড রেস্টুরেন্ট',dMrr:'MRR',dCash:'ক্যাশ',dRunway:'রানওয়ে',dGoals:'স্বল্পমেয়াদি লক্ষ্যের অগ্রগতি',dDev:'ডেভেলপমেন্ট চলছে',dLate:'ডেডলাইন পার',dTeam:'কর্মরত টিম',dInterviews:'রেস্টুরেন্ট ইন্টারভিউ',dVotePending:'আপনার ভোট বাকি',months_:'মাস',noData:'ডেটা নেই',
+ dAttention:'যেগুলোতে নজর দরকার',dNoAttention:'এই মুহূর্তে জরুরি কিছু নেই।',riskGoal:'ঝুঁকিতে থাকা লক্ষ্য',lateTask:'ডেডলাইন পার হওয়া কাজ',disagree:'ফিচারে মতভেদ',lowRunway:'রানওয়ে ৩ মাসের কম',
+ roadmap:'ফিচার রোডম্যাপ ও ভোট',roadmapHelp:'প্রতিটি ফিচারে আপনার ভোট দিন। সব ফাউন্ডার একমত হলে সিদ্ধান্ত হয়ে যাবে; মত না মিললে "মতভেদ" দেখাবে।',
+ addFeature:'+ নতুন ফিচার',fAll:'সব',fMine:'আমার ভোট বাকি',fDis:'মতভেদ',fDecided:'সিদ্ধান্ত হয়েছে',
+ decision:'সিদ্ধান্ত',pendingVotes:'ভোট বাকি',disagreeL:'মতভেদ — আলোচনা দরকার',votesL:'ভোট',youL:'আপনি',
+ bucket:'সিদ্ধান্ত অনুযায়ী ফিচার',
+ // planning
+ planning:'প্ল্যানিং',short:'স্বল্পমেয়াদি (৯০ দিন)',long:'৫ বছরের কৌশল',newGoal:'+ নতুন লক্ষ্য',totalGoals:'মোট লক্ষ্য',done:'সম্পন্ন',atRisk:'ঝুঁকিতে',avgProg:'গড় অগ্রগতি',noShort:'এখনো কোনো স্বল্পমেয়াদি লক্ষ্য নেই। আগামী ৯০ দিনের ৩–৫টি লক্ষ্য যোগ করুন।',noLong:'এখনো কোনো দীর্ঘমেয়াদি লক্ষ্য নেই।',noPeriod:'সময় ঠিক হয়নি',
+ // dev
+ dev:'ডেভেলপমেন্ট',newTask:'+ নতুন কাজ',totalTasks:'মোট কাজ',inProg:'চলছে',
+ // business
+ biz:'বিজনেস',latest:'সর্বশেষ',newMonth:'+ মাসের ডেটা',active:'সক্রিয় পেইড রেস্টুরেন্ট',newThis:'এই মাসে নতুন',left:'ছেড়ে গেছে',churn:'চার্ন',orders:'অনলাইন অর্ডার',leadDemo:'লিড → ডেমো',demoRate:'ডেমো রেট',vsPrev:'আগের মাসের তুলনায়',noMetrics:'এখনো কোনো মাসের ডেটা নেই। প্রতি মাসের শেষে "+ মাসের ডেটা" চেপে সংখ্যাগুলো বসান।',
+ tgTitle:'সেলস টার্গেট বনাম অর্জন',tgRange:'ডিসেম্বর ২০২৬ – নভেম্বর ২০২৭',tgSet:'টার্গেট সেট করুন',tgYear:'১২ মাসের সেলস টার্গেট',tgDone:'এ পর্যন্ত সেলস',tgToDate:'এ পর্যন্ত অর্জন',tgToDateD:'চলতি মাস পর্যন্ত টার্গেটের তুলনায়',tgThis:'এই মাস',tgTarget:'টার্গেট',tgActual:'অর্জন',tgPct:'অর্জন %',tgNewSales:'নতুন সেলস',tgActiveT:'সক্রিয় রেস্টুরেন্ট',tgCum:'ক্রমপুঞ্জিত সেলস',tgNoTarget:'এখনো টার্গেট সেট করা হয়নি। "টার্গেট সেট করুন" চাপুন।',tgHelp:'অর্জনের সংখ্যা আসে নিচের মাসিক ডেটা থেকে ("+ মাসের ডেটা")।',tgModal:'মাসিক টার্গেট',tgSales:'নতুন সেলস (রেস্টুরেন্ট)',tgAct:'সক্রিয় রেস্টুরেন্ট (মাস শেষে)',tgMrr:'MRR (৳)',tgFill:'বাজেট মডেলের বেস কেস বসান',tgAhead:'টার্গেট পূরণ',tgBehind:'টার্গেটের চেয়ে পিছিয়ে',tgFuture:'আসছে',thMonth:'মাস',thActive:'সক্রিয়',thNew:'নতুন',thLeft:'ছেড়ে গেছে',thOrders:'অর্ডার',thLeads:'লিড',thDemos:'ডেমো',thNote:'নোট',lakh:'লা',
+ // research
+ research:'মার্কেট রিসার্চ',rMethods:'রিসার্চ পদ্ধতি',rInterviews:'ইন্টারভিউ ও সার্ভে',rComp:'প্রতিযোগী',rSources:'ডেস্ক রিসার্চ ও সূত্র',rSwot:'SWOT',
+ rMethodsHelp:'বাজার বোঝার সব উপায়ের তালিকা। প্রতিটির অবস্থা আর কী শিখলেন লিখে রাখুন।',newMethod:'+ নতুন পদ্ধতি',
+ newInterview:'+ নতুন ইন্টারভিউ',ivCount:'মোট ইন্টারভিউ',ivPaper:'কাগজে / Excel-এ চলে',ivWtp:'গড় দিতে রাজি (৳/মাস)',ivHot:'খুব আগ্রহী (৪–৫)',ivDel:'গড় ডেলিভারি অ্যাপ খরচ (৳/মাস)',noIv:'এখনো কোনো ইন্টারভিউ নেই। মাঠে রেস্টুরেন্ট মালিকদের সাথে কথা বলে এখানে লিখুন।',topPains:'সবচেয়ে বেশি শোনা সমস্যা',
+ thRest:'রেস্টুরেন্ট',thArea:'এলাকা',thSeats:'সিট',thSys:'এখনকার সিস্টেম',thPain:'সমস্যা',thWtp:'দিতে রাজি',thInt:'আগ্রহ',thDate:'তারিখ',
+ newComp:'+ নতুন প্রতিযোগী',thName:'নাম',thType:'ধরন',thPrice:'দাম / কমিশন',thStr:'শক্তি',thWeak:'দুর্বলতা',thCity:'শহর',
+ newSource:'+ নতুন সূত্র',thTitle:'শিরোনাম',thFinding:'মূল তথ্য',thLink:'লিংক',open:'খুলুন',
+ sS:'শক্তি (Strengths)',sW:'দুর্বলতা (Weaknesses)',sO:'সুযোগ (Opportunities)',sT:'ঝুঁকি (Threats)',add:'+ যোগ',
+ // hr
+ hrAcc:'এইচআর ও অ্যাকাউন্টস',accounts:'অ্যাকাউন্টস',hr:'এইচআর',newTx:'+ নতুন লেনদেন',cashL:'ব্যাংকে / হাতে ক্যাশ',cashD:'শুরুর ক্যাশ + আয় − খরচ',inThis:'এই মাসে আয়',outThis:'এই মাসে খরচ',net:'নিট',runway:'রানওয়ে',avgOut:'গড় মাসিক খরচ',openCash:'শুরুর ক্যাশ (৳):',update:'আপডেট',updated:'আপডেট হয়েছে',monthL:'মাস:',allMonths:'সব মাস',noTx:'কোনো লেনদেন নেই। প্রতিটি আয় ও খরচ এখানে লিখে রাখুন — ক্যাশ আর রানওয়ে নিজে থেকে হিসাব হবে।',byCat:'খাত অনুযায়ী খরচ',
+ thCat:'খাত',thDesc:'বিবরণ',thIn:'আয়',thOut:'খরচ',newPerson:'+ নতুন সদস্য',activeTeam:'কর্মরত সদস্য',onProb:'প্রবেশনে',payroll:'মাসিক বেতন বিল',gone:'চলে গেছেন',noPeople:'এখনো কোনো সদস্য যোগ করা হয়নি।',thRole:'পদ',thZone:'শহর / জোন',thJoin:'যোগদান',thSal:'বেতন',thStatus:'অবস্থা'},
+en:{title:'Ostisk Founder Console',sub:'Dashboard · Planning · Development · Business · Market research · HR & Accounts',
+ nav:{dashboard:'Dashboard',planning:'Planning',development:'Development',business:'Business',research:'Market research','hr-accounts':'HR & Accounts'},
+ loading:'Loading…',saved:'Saved',deleted:'Deleted',saving:'Saving…',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Click again',newP:'New ',editP:'Edit: ',
+ lastUpd:'Last updated',someone:'Someone',readOnlyToast:'View only — changes cannot be saved right now',noPerm:'You do not have permission to change this page — view only.',quota:'Database is full — delete some old records',saveFail:'Could not save, please try again',
+ noDb:'Saving data is not available in this view. Sign in to claude.ai and open the page.',slow:'Data has not arrived yet — check your connection. What you see may be out of date.',
+ months:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+ dHello:'Ostisk at a glance',pieTitle:'Feature status',pieLive:'Live (implemented)',piePartial:'Partly live',pieBuilding:'Building',pieDecided:'Decided, not started',pieNever:"Won't do",pieUndecided:'Undecided',pieTotal:'Total features',toPlan:'→ Planning',toDev:'→ Development',inPlan:'In planning',inDev:'In development',dBiz:'Active paid restaurants',dMrr:'MRR',dCash:'Cash',dRunway:'Runway',dGoals:'Short-term goal progress',dDev:'Dev tasks in progress',dLate:'Overdue',dTeam:'Active team',dInterviews:'Restaurant interviews',dVotePending:'Your votes pending',months_:'months',noData:'No data',
+ dAttention:'Needs attention',dNoAttention:'Nothing urgent right now.',riskGoal:'Goals at risk',lateTask:'Overdue tasks',disagree:'Features with disagreement',lowRunway:'Runway under 3 months',
+ roadmap:'Feature roadmap & votes',roadmapHelp:'Vote on each feature. When all founders agree, the decision is made; if not, it shows "Disagreement".',
+ addFeature:'+ New feature',fAll:'All',fMine:'My vote pending',fDis:'Disagreement',fDecided:'Decided',
+ decision:'Decision',pendingVotes:'Votes pending',disagreeL:'Disagreement — discuss',votesL:'Votes',youL:'You',
+ bucket:'Features by decision',
+ planning:'Planning',short:'Short term (90 days)',long:'5-year strategy',newGoal:'+ New goal',totalGoals:'Total goals',done:'Done',atRisk:'At risk',avgProg:'Average progress',noShort:'No short-term goals yet. Add 3–5 goals for the next 90 days.',noLong:'No long-term goals yet.',noPeriod:'No period set',
+ dev:'Development',newTask:'+ New task',totalTasks:'Total tasks',inProg:'In progress',
+ biz:'Business',latest:'Latest',newMonth:'+ Monthly data',active:'Active paid restaurants',newThis:'New this month',left:'Churned',churn:'Churn',orders:'Online orders',leadDemo:'Leads → demos',demoRate:'Demo rate',vsPrev:'vs previous month',noMetrics:'No monthly data yet. At the end of each month, click "+ Monthly data" and enter the numbers.',
+ tgTitle:'Sales targets vs actuals',tgRange:'December 2026 – November 2027',tgSet:'Set targets',tgYear:'12-month sales target',tgDone:'Sales so far',tgToDate:'Achievement to date',tgToDateD:'vs target up to the current month',tgThis:'This month',tgTarget:'Target',tgActual:'Actual',tgPct:'Achieved %',tgNewSales:'New sales',tgActiveT:'Active restaurants',tgCum:'Cumulative sales',tgNoTarget:'No targets set yet. Click "Set targets".',tgHelp:'Actuals come from the monthly data below ("+ Monthly data").',tgModal:'Monthly targets',tgSales:'New sales (restaurants)',tgAct:'Active restaurants (month end)',tgMrr:'MRR (BDT)',tgFill:'Fill with budget model base case',tgAhead:'Target met',tgBehind:'Behind target',tgFuture:'Upcoming',thMonth:'Month',thActive:'Active',thNew:'New',thLeft:'Churned',thOrders:'Orders',thLeads:'Leads',thDemos:'Demos',thNote:'Note',lakh:'L',
+ research:'Market research',rMethods:'Research methods',rInterviews:'Interviews & surveys',rComp:'Competitors',rSources:'Desk research & sources',rSwot:'SWOT',
+ rMethodsHelp:'Every way to understand the market. Record each one\'s status and what you learned.',newMethod:'+ New method',
+ newInterview:'+ New interview',ivCount:'Total interviews',ivPaper:'Run on paper / Excel',ivWtp:'Avg willing to pay (BDT/mo)',ivHot:'Very interested (4–5)',ivDel:'Avg delivery-app spend (BDT/mo)',noIv:'No interviews yet. Talk to restaurant owners in the field and record them here.',topPains:'Most-heard problems',
+ thRest:'Restaurant',thArea:'Area',thSeats:'Seats',thSys:'Current system',thPain:'Problems',thWtp:'Willing to pay',thInt:'Interest',thDate:'Date',
+ newComp:'+ New competitor',thName:'Name',thType:'Type',thPrice:'Price / commission',thStr:'Strengths',thWeak:'Weaknesses',thCity:'City',
+ newSource:'+ New source',thTitle:'Title',thFinding:'Key finding',thLink:'Link',open:'Open',
+ sS:'Strengths',sW:'Weaknesses',sO:'Opportunities',sT:'Threats',add:'+ Add',
+ hrAcc:'HR & Accounts',accounts:'Accounts',hr:'HR',newTx:'+ New transaction',cashL:'Cash in bank / hand',cashD:'Opening cash + income − expenses',inThis:'Income this month',outThis:'Expenses this month',net:'Net',runway:'Runway',avgOut:'avg monthly spend',openCash:'Opening cash (BDT):',update:'Update',updated:'Updated',monthL:'Month:',allMonths:'All months',noTx:'No transactions. Record every income and expense here — cash and runway are calculated automatically.',byCat:'Spending by category',
+ thCat:'Category',thDesc:'Description',thIn:'Income',thOut:'Expense',newPerson:'+ New member',activeTeam:'Active members',onProb:'On probation',payroll:'Monthly payroll',gone:'Left',noPeople:'No team members added yet.',thRole:'Role',thZone:'City / zone',thJoin:'Joined',thSal:'Salary',thStatus:'Status'}
+};
+Object.assign(L.bn,{xlOut:'⬇ এক্সেল ডাউনলোড',xlIn:'⬆ এক্সেল আপলোড',modeCloud:'claude.ai ডেটাবেস',modeLocal:'এক্সেল মোড',
+ localInfo:'এই কপিটি এক্সেল দিয়ে চলছে। আপনার পরিবর্তন শুধু এই ব্রাউজারে থাকে — সবার জন্য আপডেট করতে "এক্সেল ডাউনলোড" করে GitHub-এ data.xlsx ফাইলটি বদলে দিন।',
+ localEmpty:'কোনো ডেটা নেই। উপরের "এক্সেল আপলোড" চেপে data.xlsx তুলুন, অথবা GitHub-এ index.html-এর পাশে data.xlsx রাখুন।',
+ localDirty:'GitHub-এর data.xlsx বদলেছে, কিন্তু এই ব্রাউজারে আপনার সেভ না করা পরিবর্তন আছে।',loadServer:'নতুন data.xlsx লোড করুন',
+ impTitle:'এক্সেল থেকে ডেটা তোলা',impFound:'ফাইলে যা পাওয়া গেছে:',impReplace:'পুরোটা প্রতিস্থাপন',impReplaceD:'এখনকার সব ডেটা মুছে এক্সেলের ডেটা বসবে।',impMerge:'মিলিয়ে নিন',impMergeD:'একই id-এর রেকর্ড আপডেট হবে, নতুনগুলো যোগ হবে, কিছু মুছবে না।',impGo:'ডেটা তুলুন',impDone:'এক্সেল থেকে ডেটা তোলা হয়েছে',impBad:'ফাইলটি পড়া যায়নি — কনসোল থেকে ডাউনলোড করা এক্সেল ফরম্যাট ব্যবহার করুন।',impRows:'সারি',
+ xlLoading:'এক্সেল লাইব্রেরি লোড হচ্ছে…',xlFail:'এক্সেল লাইব্রেরি লোড হয়নি — ইন্টারনেট সংযোগ দেখুন।',dlDone:'এক্সেল ফাইল তৈরি হয়েছে',dlBlocked:'এই ভিউতে ডাউনলোড বন্ধ — পেজটি নতুন ট্যাবে খুলে আবার চেষ্টা করুন।',
+ yourName:'আপনার নাম',setName:'ভোট দিতে নাম দিন',nameQ:'ভোটে কোন নাম দেখাবে?',ok:'ঠিক আছে'});
+Object.assign(L.en,{xlOut:'⬇ Download Excel',xlIn:'⬆ Upload Excel',modeCloud:'claude.ai database',modeLocal:'Excel mode',
+ localInfo:'This copy runs on Excel. Your changes stay in this browser only — to update it for everyone, download the Excel and replace data.xlsx on GitHub.',
+ localEmpty:'No data yet. Click "Upload Excel" above to load data.xlsx, or put data.xlsx next to index.html on GitHub.',
+ localDirty:'data.xlsx on GitHub has changed, but this browser has unsaved changes of yours.',loadServer:'Load the new data.xlsx',
+ impTitle:'Import data from Excel',impFound:'Found in the file:',impReplace:'Replace everything',impReplaceD:'All current data is removed and the Excel data takes its place.',impMerge:'Merge',impMergeD:'Records with the same id are updated, new ones are added, nothing is deleted.',impGo:'Import',impDone:'Data imported from Excel',impBad:'Could not read the file — use the Excel format downloaded from this console.',impRows:'rows',
+ xlLoading:'Loading Excel library…',xlFail:'Could not load the Excel library — check your connection.',dlDone:'Excel file created',dlBlocked:'Downloads are blocked in this view — open the page in a new tab and try again.',
+ yourName:'Your name',setName:'Set your name to vote',nameQ:'Which name should your votes show?',ok:'OK'});
+let lang='bn';try{lang=localStorage.getItem('ostisk-lang')||'bn'}catch{}
+const t=k=>L[lang][k]??L.bn[k]??k;
+const loc=()=>lang==='bn'?'bn-BD':'en-IN';
+
+/* option sets: [key, bn, en, cssClass] */
+const O={
+ goalStatus:[['todo','শুরু হয়নি','Not started','p-todo'],['doing','চলছে','In progress','p-doing'],['risk','ঝুঁকিতে','At risk','p-risk'],['done','সম্পন্ন','Done','p-done']],
+ horizon:[['short','স্বল্পমেয়াদি (৯০ দিন)','Short term (90 days)'],['long','৫ বছরের কৌশল','5-year strategy']],
+ devStage:[['todo','করতে হবে','To do','p-todo'],['doing','চলছে','In progress','p-doing'],['testing','টেস্টিং','Testing','p-test'],['done','সম্পন্ন','Done','p-done']],
+ prio:[['high','জরুরি','High','p-high'],['med','মাঝারি','Medium','p-med'],['low','কম','Low','p-low']],
+ kind:[['out','খরচ','Expense'],['in','আয় / টাকা এসেছে','Income / money in']],
+ txCat:[['বেতন','বেতন','Salaries'],['কমিশন','কমিশন','Commission'],['মার্কেটিং','মার্কেটিং','Marketing'],['অফিস','অফিস','Office'],['টেক / সার্ভার','টেক / সার্ভার','Tech / server'],['যাতায়াত','যাতায়াত','Transport'],['সাবস্ক্রিপশন আয়','সাবস্ক্রিপশন আয়','Subscription income'],['সেটআপ ফি','সেটআপ ফি','Setup fees'],['অর্ডার ফি','অর্ডার ফি','Order fees'],['ইনভেস্টমেন্ট','ইনভেস্টমেন্ট','Investment'],['ফাউন্ডার ক্যাপিটাল','ফাউন্ডার ক্যাপিটাল','Founder capital'],['অন্যান্য','অন্যান্য','Other']],
+ pStatus:[['active','কর্মরত','Active','p-done'],['probation','প্রবেশনে','Probation','p-test'],['left','চলে গেছেন','Left','p-todo']],
+ fStatus:[['live','চালু আছে','Live','p-done'],['partial','আংশিক চালু','Partly live','p-doing'],['building','বানানো হচ্ছে','Building','p-test'],['idea','পরিকল্পনা','Idea','p-todo']],
+ fCat:[['core','মূল অপারেশন','Core operations'],['guest','গ্রাহক ও অর্ডার','Guests & ordering'],['back','ব্যাক-অফিস','Back office'],['eco','ইকোসিস্টেম','Ecosystem']],
+ vote:[['now','স্বল্পমেয়াদেই','Short term','p-done'],['m3','৩ মাস পরে','In 3 months','p-doing'],['m6','৬ মাস পরে','In 6 months','p-vio'],['y1','১ বছর পরে','In 1 year','p-test'],['never','করবো না','Won\'t do','p-risk']],
+ mStatus:[['todo','শুরু হয়নি','Not started','p-todo'],['doing','চলছে','In progress','p-doing'],['done','সম্পন্ন','Done','p-done']],
+ sys:[['paper','কাগজ','Paper'],['excel','Excel','Excel'],['pos','POS সফটওয়্যার','POS software'],['cloud','ক্লাউড সিস্টেম','Cloud system'],['other','অন্যান্য','Other']],
+ interest:[['1','১ — আগ্রহ নেই','1 — not interested'],['2','২','2'],['3','৩ — ভাবছেন','3 — considering'],['4','৪','4'],['5','৫ — এখনই চান','5 — wants it now']],
+ compType:[['delivery','ডেলিভারি প্ল্যাটফর্ম','Delivery platform'],['pos','POS / ম্যানেজমেন্ট','POS / management'],['qr','QR / অর্ডারিং','QR / ordering'],['inventory','ইনভেন্টরি / অ্যাকাউন্টিং','Inventory / accounting'],['booking','বুকিং / ডাইন-ইন','Booking / dine-in'],['other','অন্যান্য','Other']],
+ quad:[['s','শক্তি','Strength'],['w','দুর্বলতা','Weakness'],['o','সুযোগ','Opportunity'],['t','ঝুঁকি','Threat']]
+};
+const ol=(set,k)=>{const r=O[set].find(x=>x[0]==k);return r?(lang==='bn'?r[1]:r[2]):(k??'')};
+const pill=(set,k)=>{const r=O[set].find(x=>x[0]==k);return r?`<span class="pill ${r[3]||'p-todo'}">${lang==='bn'?r[1]:r[2]}</span>`:''};
+const optsOf=set=>O[set].map(r=>[r[0],lang==='bn'?r[1]:r[2]]);
+
+/* ================= state & helpers ================= */
+const COLLS=['goals','dev','metrics','txns','people','features','rmethods','interviews','competitors','sources','swot'];
+const S={settings:{},targets:{}};COLLS.forEach(c=>S[c]=[]);
+const loaded={};let db=null,user=null,me=null,readOnly=false,names={};
+let planTab='short',hrTab='accounts',txMonth='all',resTab='methods',fFilter='all';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf=n=>(Number(n)||0).toLocaleString(loc());
+const yr=n=>lang==='bn'?String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]):String(n);
+const tk=n=>(lang==='bn'?'৳':'৳ ')+nf(Math.round(Number(n)||0));
+const pct=n=>nf(Math.round(n))+'%';
+const today=()=>new Date().toISOString().slice(0,10);
+const thisMonth=()=>new Date().toISOString().slice(0,7);
+const monthLabel=m=>{if(!m)return'';const[y,mm]=m.split('-');return t('months')[+mm-1]+' '+yr(y)};
+const dateLabel=d=>{if(!d)return'';const[y,m,dd]=d.split('-');return yr(+dd)+' '+t('months')[+m-1]+' '+yr(y)};
+const loc2=(o,k)=>lang==='en'&&o[k+'_en']?o[k+'_en']:(o[k]||o[k+'_en']||'');
+function toast(x){const e=$('#toast');e.textContent=x;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
+let bannerKey='';const INFO_B=new Set(['localInfo','localEmpty']);
+function banner(k){bannerKey=k||'';const b=$('#banner');b.className='banner'+(INFO_B.has(k)?' info':'');b.textContent=k?t(k):'';
+ if(k==='localDirty'){const x=document.createElement('button');x.textContent=t('loadServer');x.onclick=()=>loadServerXlsx(true);b.appendChild(x)}
+ b.style.display=k?'block':'none'}
+const can=()=>!(readOnly||!db);const dis=()=>can()?'':' disabled';
+const loadingNote=c=>loaded[c]?'':`<div class="empty">${t('loading')}</div>`;
+
+/* ================= forms ================= */
+const F=(k,bnL,enL,tp,ext={})=>({k,bn:bnL,en:enL,t:tp,...ext});
+const FORMS={
+ goals:{bn:'লক্ষ্য',en:'Goal',fields:[F('title','লক্ষ্য','Goal','text',{full:1,req:1}),F('horizon','ধরন','Type','select',{o:'horizon'}),F('period','সময়কাল (যেমন: মাস ৩ / Q1 2027 / 2028)','Period (e.g. Month 3 / Q1 2027 / 2028)','text'),F('status','অবস্থা','Status','select',{o:'goalStatus'}),F('progress','অগ্রগতি (%)','Progress (%)','number',{min:0,max:100}),F('owner','দায়িত্বে','Owner','text'),F('target','মাপকাঠি / টার্গেট','Measure / target','text',{full:1}),F('note','নোট','Notes','textarea',{full:1})]},
+ dev:{bn:'ডেভেলপমেন্ট কাজ',en:'Development task',fields:[F('title','কাজ / ফিচার','Task / feature','text',{full:1,req:1}),F('stage','অবস্থা','Stage','select',{o:'devStage'}),F('priority','গুরুত্ব','Priority','select',{o:'prio'}),F('owner','দায়িত্বে','Owner','text'),F('due','ডেডলাইন','Due date','date'),F('note','বিস্তারিত','Details','textarea',{full:1})]},
+ metrics:{bn:'মাসের বিজনেস ডেটা',en:'Monthly business data',fields:[F('month','মাস','Month','month',{req:1}),F('active','সক্রিয় পেইড রেস্টুরেন্ট','Active paid restaurants','number'),F('newPaid','নতুন পেইড রেস্টুরেন্ট','New paid restaurants','number'),F('churned','ছেড়ে গেছে','Churned','number'),F('mrr','MRR (৳)','MRR (BDT)','number'),F('orders','অনলাইন অর্ডার','Online orders','number'),F('leads','লিড','Leads','number'),F('demos','ডেমো','Demos','number'),F('note','নোট','Notes','textarea',{full:1})]},
+ txns:{bn:'লেনদেন',en:'Transaction',fields:[F('date','তারিখ','Date','date',{req:1}),F('kind','ধরন','Type','select',{o:'kind'}),F('category','খাত','Category','select',{o:'txCat'}),F('amount','টাকা (৳)','Amount (BDT)','number',{req:1}),F('note','বিবরণ','Description','text',{full:1})]},
+ people:{bn:'টিম সদস্য',en:'Team member',fields:[F('name','নাম','Name','text',{req:1}),F('role','পদ','Role','text'),F('city','শহর / জোন','City / zone','text'),F('joined','যোগদানের তারিখ','Joining date','date'),F('salary','মাসিক বেতন (৳)','Monthly salary (BDT)','number'),F('status','অবস্থা','Status','select',{o:'pStatus'}),F('note','নোট (পারফরম্যান্স, ছুটি ইত্যাদি)','Notes (performance, leave etc.)','textarea',{full:1})]},
+ features:{bn:'ফিচার',en:'Feature',fields:[F('name','ফিচারের নাম (বাংলা)','Feature name (Bangla)','text',{full:1,req:1}),F('name_en','ফিচারের নাম (ইংরেজি)','Feature name (English)','text',{full:1}),F('desc','বিবরণ (বাংলা)','Description (Bangla)','textarea',{full:1}),F('desc_en','বিবরণ (ইংরেজি)','Description (English)','textarea',{full:1}),F('category','বিভাগ','Category','select',{o:'fCat'}),F('status','এখনকার অবস্থা','Current status','select',{o:'fStatus'}),F('order','ক্রম (ছোট সংখ্যা আগে)','Sort order (lower first)','number')]},
+ rmethods:{bn:'রিসার্চ পদ্ধতি',en:'Research method',fields:[F('name','পদ্ধতি','Method','text',{full:1,req:1}),F('name_en','পদ্ধতি (ইংরেজি)','Method (English)','text',{full:1}),F('how','কীভাবে করবেন','How to do it','textarea',{full:1}),F('status','অবস্থা','Status','select',{o:'mStatus'}),F('owner','দায়িত্বে','Owner','text'),F('learned','কী শিখলাম','What we learned','textarea',{full:1}),F('order','ক্রম','Order','number')]},
+ interviews:{bn:'ইন্টারভিউ / সার্ভে',en:'Interview / survey',fields:[F('restaurant','রেস্টুরেন্টের নাম','Restaurant name','text',{req:1}),F('area','এলাকা','Area','text'),F('city','শহর','City','text'),F('seats','সিট সংখ্যা','Seats','number'),F('contactRole','কার সাথে কথা হলো (মালিক / ম্যানেজার)','Spoke with (owner / manager)','text'),F('system','এখনকার সিস্টেম','Current system','select',{o:'sys'}),F('deliverySpend','ডেলিভারি অ্যাপে মাসিক খরচ (৳)','Monthly delivery-app spend (BDT)','number'),F('wtp','মাসে কত দিতে রাজি (৳)','Willing to pay per month (BDT)','number'),F('interest','আগ্রহ','Interest','select',{o:'interest'}),F('date','তারিখ','Date','date'),F('pains','সমস্যা (কমা দিয়ে আলাদা করুন)','Problems (comma-separated)','text',{full:1}),F('wants','কোন ফিচার চান','Features wanted','text',{full:1}),F('note','নোট','Notes','textarea',{full:1})]},
+ competitors:{bn:'প্রতিযোগী',en:'Competitor',fields:[F('name','নাম','Name','text',{req:1}),F('type','ধরন','Type','select',{o:'compType'}),F('price','দাম / কমিশন','Price / commission','text'),F('city','শহর','City','text'),F('strengths','শক্তি','Strengths','textarea',{full:1}),F('weaknesses','দুর্বলতা','Weaknesses','textarea',{full:1}),F('url','ওয়েবসাইট','Website','text',{full:1})]},
+ sources:{bn:'সূত্র',en:'Source',fields:[F('title','শিরোনাম','Title','text',{full:1,req:1}),F('finding','মূল তথ্য','Key finding','textarea',{full:1}),F('date','তারিখ','Date','date'),F('tag','বিষয়','Topic','text'),F('url','লিংক','Link','text',{full:1})]},
+ swot:{bn:'SWOT পয়েন্ট',en:'SWOT point',fields:[F('quad','ভাগ','Quadrant','select',{o:'quad'}),F('text','পয়েন্ট','Point','textarea',{full:1,req:1})]}
+};
+let editing=null;
+function openForm(coll,item,defs){
+ if(!can()){toast(t('readOnlyToast'));return}
+ const Fm=FORMS[coll];editing={coll,id:item?.id||null,fid:item?.featureId||defs?.featureId||null};
+ const d=item||{...defaults(coll),...(defs||{})};
+ let h=`<h3>${item?t('editP'):t('newP')}${Fm[lang]}</h3><form id="frm"><div class="fg">`;
+ for(const f of Fm.fields){
+  const v=d[f.k]??'';let inp;
+  if(f.t==='select')inp=`<select name="${f.k}">${optsOf(f.o).map(([a,b])=>`<option value="${esc(a)}"${String(a)===String(v)?' selected':''}>${esc(b)}</option>`).join('')}</select>`;
+  else if(f.t==='textarea')inp=`<textarea name="${f.k}">${esc(v)}</textarea>`;
+  else inp=`<input name="${f.k}" type="${f.t}" value="${esc(v)}"${f.req?' required':''}${f.min!=null?` min="${f.min}"`:''}${f.max!=null?` max="${f.max}"`:''}${f.t==='number'?' step="any"':''}>`;
+  h+=`<div class="${f.full?'full':''}"><label>${f[lang]}</label>${inp}</div>`;
+ }
+ h+=`</div><div class="mf"><span class="by" id="by"></span>${item?`<button type="button" class="btn ghost" id="del">${t('del')}</button>`:''}<button type="button" class="btn ghost" id="cancel">${t('cancel')}</button><button class="btn" id="save">${t('save')}</button></div></form>`;
+ $('#modal').innerHTML=h;$('#ov').classList.add('show');
+ if(item?.updatedBy)whoName(item.updatedBy).then(n=>{const e=$('#by');if(e)e.textContent=`${t('lastUpd')}: ${n}${item.updatedAt?', '+dateLabel(item.updatedAt.slice(0,10)):''}`});
+ $('#cancel').onclick=closeForm;
+ if(item){const b=$('#del');b.onclick=async()=>{if(b.dataset.c){await remove(coll,item.id)}else{b.dataset.c=1;b.textContent=t('sure');b.classList.remove('ghost');b.classList.add('danger')}}}
+ $('#frm').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.target);const o={};
+  for(const f of Fm.fields){let v=fd.get(f.k);if(f.t==='number')v=v===''?null:Number(v);o[f.k]=v}
+  if(coll==='goals'){if(o.progress!=null)o.progress=Math.max(0,Math.min(100,o.progress));if(o.status==='done')o.progress=100}
+  if(coll==='features'&&item)o.votes=item.votes||{};
+  await save(coll,editing.id,o)};
+}
+function defaults(c){return{goals:{horizon:planTab,status:'todo',progress:0},dev:{stage:'todo',priority:'med'},metrics:{month:thisMonth()},txns:{date:today(),kind:'out',category:'অন্যান্য'},people:{status:'active',joined:today()},features:{category:'core',status:'idea',order:100},rmethods:{status:'todo',order:100},interviews:{date:today(),system:'paper',interest:'3',city:'ঢাকা'},competitors:{type:'pos'},sources:{date:today()},swot:{quad:'s'}}[c]||{}}
+function closeForm(){$('#ov').classList.remove('show');$('#modal').style.maxWidth='';editing=null}
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')closeForm()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeForm()});
+const stamp=o=>({...o,updatedBy:me||null,updatedAt:new Date().toISOString()});
+async function save(coll,id,o){
+ const btn=$('#save');if(btn){btn.disabled=true;btn.textContent=t('saving')}
+ try{
+  if(coll==='metrics'){if(id&&id!==o.month)await db.collection('metrics').doc(id).delete();await db.collection('metrics').doc(o.month).set(stamp(o))}
+  else{const fid=editing?.fid;if(fid)o.featureId=fid;const ref=id?db.collection(coll).doc(id):db.collection(coll).doc();await ref.set(stamp(o));
+   if(fid&&!id&&(coll==='goals'||coll==='dev')){try{await db.collection('features').doc(fid).update({[coll==='goals'?'planRef':'devRef']:ref.id})}catch(e){}}}
+  closeForm();toast(t('saved'));
+ }catch(e){handleErr(e);if(btn){btn.disabled=false;btn.textContent=t('save')}}
+}
+async function remove(coll,id){try{await db.collection(coll).doc(id).delete();closeForm();toast(t('deleted'))}catch(e){handleErr(e)}}
+async function quick(coll,id,patch){if(!can())return;try{await db.collection(coll).doc(id).update(stamp(patch))}catch(e){handleErr(e)}}
+const voteBusy=new Set();
+async function vote(fid,choice){
+ if(!can()||!me){toast(t('readOnlyToast'));return}
+ if(voteBusy.has(fid))return;const f=S.features.find(x=>x.id===fid);
+ const cur=f?.votes?.[me];const val=cur===choice?null:choice;
+ voteBusy.add(fid);
+ try{await db.collection('features').doc(fid).update({votes:{[me]:val}})}catch(e){handleErr(e)}finally{voteBusy.delete(fid)}
+}
+function handleErr(e){
+ if(e?.code==='invalid_argument'){readOnly=true;banner('noPerm');render()}
+ else if(e?.code==='quota_exceeded')toast(t('quota'));else toast(t('saveFail'));
+}
+async function whoName(id){if(!id)return t('someone');if(!user)return names[id]||t('someone');if(names[id])return names[id];try{const p=await user.profiles([id]);names[id]=p?.[id]?.name||''}catch{names[id]=''}return names[id]||t('someone')}
+async function resolveNames(ids){ids=[...new Set(ids)].filter(i=>i&&!(i in names));if(!ids.length||!user)return;try{const p=await user.profiles(ids);ids.forEach(i=>names[i]=p?.[i]?.name||'')}catch{ids.forEach(i=>names[i]='')}render()}
+const nm=id=>id===me?t('youL'):(names[id]||t('someone'));
+
+/* ================= feature voting logic ================= */
+function voteState(f){
+ const v=Object.entries(f.votes||{}).filter(([k,x])=>x);
+ if(!v.length)return{state:'none',votes:v};
+ const vals=[...new Set(v.map(x=>x[1]))];
+ const voters=Math.max(2,knownVoters().length);
+ if(v.length<voters)return{state:'pending',votes:v,lean:vals.length===1?vals[0]:null};
+ return vals.length===1?{state:'decided',votes:v,decision:vals[0]}:{state:'disagree',votes:v};
+}
+function knownVoters(){const s=new Set();S.features.forEach(f=>Object.entries(f.votes||{}).forEach(([k,x])=>{if(x)s.add(k)}));if(me)s.add(me);return[...s]}
+
+/* ================= views ================= */
+const VIEWS=['dashboard','planning','development','business','research','hr-accounts'];
+function view(){const h=location.hash.slice(1);return VIEWS.includes(h)?h:'dashboard'}
+function render(){
+ document.documentElement.lang=lang;document.title=t('title');
+ $('#appTitle').textContent=t('title');$('#appSub').textContent=t('sub');renderChrome();
+ document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+ if(bannerKey)banner(bannerKey);
+ const v=view();
+ $('#nav').innerHTML=VIEWS.map((k,i)=>`<a href="#${k}" class="${k===v?'on':''}">${yr(i+1)}. ${t('nav')[k]}</a>`).join('');
+ const el=$('#view');
+ el.innerHTML={dashboard:vDash,planning:vPlanning,development:vDev,business:vBiz,research:vResearch,'hr-accounts':vHR}[v]();
+ bind(el);
+}
+
+/* ---- finance helpers ---- */
+function finance(){
+ const open=Number(S.settings.openingCash)||0;
+ const sum=(f)=>S.txns.filter(f).reduce((a,x)=>a+(Number(x.amount)||0),0);
+ const inn=sum(x=>x.kind==='in'),out=sum(x=>x.kind!=='in');const cash=open+inn-out;const m=thisMonth();
+ const mi=sum(x=>x.kind==='in'&&(x.date||'').startsWith(m)),mo=sum(x=>x.kind!=='in'&&(x.date||'').startsWith(m));
+ const months={};S.txns.forEach(x=>{const k=(x.date||'').slice(0,7);if(k&&x.kind!=='in')months[k]=(months[k]||0)+(Number(x.amount)||0)});
+ const mk=Object.keys(months).sort().slice(-3);const burn=mk.length?mk.reduce((a,k)=>a+months[k],0)/mk.length:0;
+ return{open,cash,mi,mo,burn,mk,runway:burn>0?cash/burn:null};
+}
+const sortedMetrics=()=>[...S.metrics].filter(m=>m.month).sort((a,b)=>a.month.localeCompare(b.month));
+
+function featBucket(f){
+ if(f.status==='live')return'live';if(f.status==='partial')return'partial';if(f.status==='building')return'building';
+ const v=voteState(f);if(v.state==='decided')return v.decision==='never'?'never':'decided';return'undecided'}
+const PIE=[['live','pieLive','#2F7D4F'],['partial','piePartial','#6FAE84'],['building','pieBuilding','#2B5C8A'],['decided','pieDecided','#E0A458'],['never','pieNever','#B42318'],['undecided','pieUndecided','#CFC4B2']];
+function pieChart(){
+ const c={};PIE.forEach(p=>c[p[0]]=0);S.features.forEach(f=>c[featBucket(f)]++);const tot=S.features.length;
+ const R=80,r=50,cx=100,cy=100;let a0=-Math.PI/2;let svg=`<svg viewBox="0 0 200 200" width="190" height="190" role="img" aria-label="${t('pieTitle')}">`;
+ if(!tot)svg+=`<circle cx="${cx}" cy="${cy}" r="${(R+r)/2}" fill="none" stroke="#EFE8DC" stroke-width="${R-r}"/>`;
+ PIE.forEach(([k,,col])=>{const n=c[k];if(!n)return;const a1=a0+n/tot*Math.PI*2;
+  if(n===tot){svg+=`<circle cx="${cx}" cy="${cy}" r="${(R+r)/2}" fill="none" stroke="${col}" stroke-width="${R-r}"/>`}
+  else{const lg=a1-a0>Math.PI?1:0;const p=(rad,a)=>`${cx+rad*Math.cos(a)},${cy+rad*Math.sin(a)}`;
+   svg+=`<path d="M${p(R,a0)} A${R},${R} 0 ${lg} 1 ${p(R,a1)} L${p(r,a1)} A${r},${r} 0 ${lg} 0 ${p(r,a0)} Z" fill="${col}" stroke="#FFFDF9" stroke-width="2"/>`}
+  a0=a1});
+ svg+=`<text x="100" y="98" text-anchor="middle" font-size="30" font-weight="700" fill="#1B1A17">${nf(tot)}</text><text x="100" y="120" text-anchor="middle" font-size="12" fill="#857E72">${t('pieTotal')}</text></svg>`;
+ const leg=PIE.map(([k,lk,col])=>`<div style="display:flex;align-items:center;gap:8px;font-size:14px;margin:5px 0"><span style="width:12px;height:12px;border-radius:3px;background:${col};flex-shrink:0"></span><span style="flex:1">${t(lk)}</span><b>${nf(c[k])}</b><span style="color:var(--mute);width:44px;text-align:right">${tot?pct(c[k]/tot*100):''}</span></div>`).join('');
+ return `<div class="chart" style="margin-bottom:12px"><h4>${t('pieTitle')}</h4><div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">${svg}<div style="flex:1;min-width:220px">${leg}</div></div></div>`;
+}
+function linkBtns(f){
+ const g=f.planRef&&S.goals.find(x=>x.id===f.planRef),d=f.devRef&&S.dev.find(x=>x.id===f.devRef);
+ const pl=g?`<a href="#planning" class="pill p-doing" style="text-decoration:none">✓ ${t('inPlan')}: ${esc(ol('goalStatus',g.status))}</a>`:`<button class="mini" data-send="${esc(f.id)}" data-to="goals"${dis()}>${t('toPlan')}</button>`;
+ const dv=d?`<a href="#development" class="pill p-test" style="text-decoration:none">✓ ${t('inDev')}: ${esc(ol('devStage',d.stage))}</a>`:`<button class="mini" data-send="${esc(f.id)}" data-to="dev"${dis()}>${t('toDev')}</button>`;
+ return pl+dv}
+function sendFeature(fid,to){
+ const f=S.features.find(x=>x.id===fid);if(!f)return;const v=voteState(f);const d=v.state==='decided'?v.decision:(v.lean||null);
+ const name=loc2(f,'name'),desc=loc2(f,'desc');
+ if(to==='goals')openForm('goals',null,{featureId:fid,title:name,note:desc,horizon:(d==='y1'||d==='m6')?'long':'short',period:d?ol('vote',d):'',status:'todo',progress:0,target:''});
+ else openForm('dev',null,{featureId:fid,title:name,note:desc,stage:'todo',priority:d==='now'?'high':d==='m3'?'med':'low'});
+}
+function vDash(){
+ const rows=sortedMetrics();const Lm=rows[rows.length-1]||{},Pm=rows[rows.length-2]||{};
+ const fin=finance();
+ const sg=S.goals.filter(g=>(g.horizon||'short')==='short');const avg=sg.length?sg.reduce((a,g)=>a+(Number(g.progress)||0),0)/sg.length:0;
+ const doing=S.dev.filter(d=>d.stage==='doing').length;const late=S.dev.filter(d=>d.due&&d.stage!=='done'&&d.due<today());
+ const team=S.people.filter(p=>p.status!=='left').length;
+ const myPending=S.features.filter(f=>!(f.votes||{})[me]).length;
+ const dlt=(k,f=nf)=>{if(Pm[k]==null||Lm[k]==null)return'';const d=(Number(Lm[k])||0)-(Number(Pm[k])||0);return`<span class="${d>=0?'up':'down'}">${d>=0?'▲':'▼'} ${f(Math.abs(d))}</span>`};
+ let h=`<div class="row"><h2>${t('dHello')}</h2></div><div class="kpis">
+ <div class="kpi link" data-go="business"><div class="l">${t('dBiz')}</div><div class="v">${Lm.month?nf(Lm.active):'—'}</div><div class="d">${Lm.month?monthLabel(Lm.month)+' '+dlt('active'):t('noData')}</div></div>
+ <div class="kpi link" data-go="business"><div class="l">${t('dMrr')}</div><div class="v">${Lm.month?tk(Lm.mrr):'—'}</div><div class="d">${dlt('mrr',tk)}</div></div>
+ <div class="kpi link" data-go="hr-accounts"><div class="l">${t('dCash')}</div><div class="v ${fin.cash<0?'down':''}">${tk(fin.cash)}</div><div class="d">${t('dRunway')}: ${fin.runway!=null?nf(fin.runway.toFixed(1))+' '+t('months_'):'—'}</div></div>
+ <div class="kpi link" data-go="planning"><div class="l">${t('dGoals')}</div><div class="v">${pct(avg)}</div><div class="bar"><i style="width:${avg}%"></i></div></div>
+ <div class="kpi link" data-go="development"><div class="l">${t('dDev')}</div><div class="v">${nf(doing)}</div><div class="d ${late.length?'down':''}">${t('dLate')}: ${nf(late.length)}</div></div>
+ <div class="kpi link" data-go="hr-accounts"><div class="l">${t('dTeam')}</div><div class="v">${nf(team)}</div></div>
+ <div class="kpi link" data-go="research"><div class="l">${t('dInterviews')}</div><div class="v">${nf(S.interviews.length)}</div></div>
+ <div class="kpi"><div class="l">${t('dVotePending')}</div><div class="v ${myPending?'down':'up'}">${nf(myPending)}</div></div></div>`;
+ // attention
+ const att=[];
+ S.goals.filter(g=>g.status==='risk').forEach(g=>att.push(`<li><span class="pill p-risk">${t('riskGoal')}</span> ${esc(g.title)}</li>`));
+ late.forEach(d=>att.push(`<li><span class="pill p-high">${t('lateTask')}</span> ${esc(d.title)} · ${dateLabel(d.due)}</li>`));
+ S.features.filter(f=>voteState(f).state==='disagree').forEach(f=>att.push(`<li><span class="pill p-test">${t('disagree')}</span> ${esc(loc2(f,'name'))}</li>`));
+ if(fin.runway!=null&&fin.runway<3)att.push(`<li><span class="pill p-risk">${t('lowRunway')}</span> ${nf(fin.runway.toFixed(1))} ${t('months_')}</li>`);
+ h+=`<div class="chart" style="margin-bottom:8px"><h4>${t('dAttention')}</h4>${att.length?`<ul style="list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px">${att.slice(0,10).join('')}</ul>`:`<div style="color:var(--mute);font-size:14px">${t('dNoAttention')}</div>`}</div>`;
+ // roadmap summary by decision
+ const buckets={};O.vote.forEach(v=>buckets[v[0]]=[]);let pend=0,disg=0;
+ S.features.forEach(f=>{const s=voteState(f);if(s.state==='decided')buckets[s.decision].push(f);else if(s.state==='disagree')disg++;else pend++});
+ h+=`<div class="sec-title"><span class="sp">${t('roadmap')}</span><button class="btn" data-new="features"${dis()}>${t('addFeature')}</button></div>`;
+ h+=`<p style="color:var(--mute);font-size:14px;margin:-4px 0 12px">${t('roadmapHelp')}</p>`;
+ h+=`<div class="kpis">${O.vote.map(v=>`<div class="kpi"><div class="l"><span class="pill ${v[3]}">${lang==='bn'?v[1]:v[2]}</span></div><div class="v">${nf(buckets[v[0]].length)}</div><div class="d">${buckets[v[0]].slice(0,3).map(f=>esc(loc2(f,'name'))).join(' · ')}${buckets[v[0]].length>3?' …':''}</div></div>`).join('')}<div class="kpi"><div class="l">${t('fDis')} / ${t('pendingVotes')}</div><div class="v">${nf(disg)} / ${nf(pend)}</div></div></div>`;
+ h+=pieChart();
+ h+=`<div class="row" style="margin-bottom:10px"><div class="seg">${[['all','fAll'],['mine','fMine'],['dis','fDis'],['decided','fDecided']].map(([k,l])=>`<button data-ff="${k}" class="${fFilter===k?'on':''}">${t(l)}</button>`).join('')}</div></div>`;
+ if(!loaded.features)return h+loadingNote('features');
+ let list=[...S.features].sort((a,b)=>(a.order??100)-(b.order??100)||String(a.name).localeCompare(String(b.name)));
+ if(fFilter==='mine')list=list.filter(f=>!(f.votes||{})[me]);
+ if(fFilter==='dis')list=list.filter(f=>voteState(f).state==='disagree');
+ if(fFilter==='decided')list=list.filter(f=>voteState(f).state==='decided');
+ if(!list.length)return h+`<div class="empty">—</div>`;
+ const ids=[];
+ h+='<div class="flist">';
+ for(const f of list){
+  const s=voteState(f);const mine=(f.votes||{})[me];s.votes.forEach(([k])=>ids.push(k));
+  let st='';
+  if(s.state==='decided')st=`<b>${t('decision')}:</b> ${pill('vote',s.decision)}`;
+  else if(s.state==='disagree')st=`<span class="pill p-test">${t('disagreeL')}</span>`;
+  else st=`<span class="pill p-todo">${t('pendingVotes')}</span>`;
+  h+=`<div class="feat"><div><h3>${esc(loc2(f,'name'))}</h3>${loc2(f,'desc')?`<div class="ds">${esc(loc2(f,'desc'))}</div>`:''}<div class="meta">${pill('fStatus',f.status)}<span>${esc(ol('fCat',f.category))}</span><button class="edit" data-edit="features" data-id="${esc(f.id)}">✎</button>${linkBtns(f)}</div></div>
+  <div class="votes">${O.vote.map(v=>`<button data-vote="${esc(f.id)}" data-c="${v[0]}" class="${mine===v[0]?'on':''}"${can()&&me?'':' disabled'}>${lang==='bn'?v[1]:v[2]}</button>`).join('')}</div>
+  <div class="vlist">${st}${s.votes.length?' · '+t('votesL')+': ':''}${s.votes.map(([k,x])=>`<span class="vchip">${esc(nm(k))}: ${esc(ol('vote',x))}</span>`).join('')}</div></div>`;
+ }
+ h+='</div>';
+ const missing=ids.filter(i=>!(i in names)&&i!==me);if(missing.length)setTimeout(()=>resolveNames(missing),0);
+ return h;
+}
+
+function vPlanning(){
+ const list=S.goals.filter(g=>(g.horizon||'short')===planTab);
+ const done=list.filter(g=>g.status==='done').length,risk=list.filter(g=>g.status==='risk').length;
+ const avg=list.length?list.reduce((a,g)=>a+(Number(g.progress)||0),0)/list.length:0;
+ let h=`<div class="row"><h2>${t('planning')}</h2><div class="seg"><button data-plan="short" class="${planTab==='short'?'on':''}">${t('short')}</button><button data-plan="long" class="${planTab==='long'?'on':''}">${t('long')}</button></div><button class="btn" data-new="goals"${dis()}>${t('newGoal')}</button></div>`;
+ h+=`<div class="kpis"><div class="kpi"><div class="l">${t('totalGoals')}</div><div class="v">${nf(list.length)}</div></div><div class="kpi"><div class="l">${t('done')}</div><div class="v up">${nf(done)}</div></div><div class="kpi"><div class="l">${t('atRisk')}</div><div class="v ${risk?'down':''}">${nf(risk)}</div></div><div class="kpi"><div class="l">${t('avgProg')}</div><div class="v">${pct(avg)}</div><div class="bar"><i style="width:${avg}%"></i></div></div></div>`;
+ if(!loaded.goals)return h+loadingNote('goals');
+ if(!list.length)return h+`<div class="empty">${planTab==='short'?t('noShort'):t('noLong')}</div>`;
+ const groups={};list.forEach(g=>{const p=g.period||t('noPeriod');(groups[p]=groups[p]||[]).push(g)});
+ for(const k of Object.keys(groups).sort((a,b)=>a.localeCompare(b,'en',{numeric:true}))){h+=`<div class="group"><h4>${esc(k)}</h4><div class="grid">`;
+  for(const g of groups[k])h+=`<div class="card" data-edit="goals" data-id="${esc(g.id)}"><h3>${esc(g.title)}</h3><div class="meta">${pill('goalStatus',g.status)}${g.owner?`<span>👤 ${esc(g.owner)}</span>`:''}${g.target?`<span>🎯 ${esc(g.target)}</span>`:''}</div>${g.note?`<div class="note">${esc(g.note)}</div>`:''}<div class="bar"><i style="width:${Number(g.progress)||0}%"></i></div><div class="meta"><span>${pct(Number(g.progress)||0)}</span></div></div>`;
+  h+='</div></div>'}
+ return h;
+}
+
+function vDev(){
+ const all=S.dev;const doing=all.filter(d=>d.stage==='doing').length,done=all.filter(d=>d.stage==='done').length;
+ const late=all.filter(d=>d.due&&d.stage!=='done'&&d.due<today()).length;
+ let h=`<div class="row"><h2>${t('dev')}</h2><button class="btn" data-new="dev"${dis()}>${t('newTask')}</button></div>`;
+ h+=`<div class="kpis"><div class="kpi"><div class="l">${t('totalTasks')}</div><div class="v">${nf(all.length)}</div></div><div class="kpi"><div class="l">${t('inProg')}</div><div class="v">${nf(doing)}</div></div><div class="kpi"><div class="l">${t('done')}</div><div class="v up">${nf(done)}</div></div><div class="kpi"><div class="l">${t('dLate')}</div><div class="v ${late?'down':''}">${nf(late)}</div></div></div>`;
+ if(!loaded.dev)return h+loadingNote('dev');
+ const order=['todo','doing','testing','done'];const pr={high:0,med:1,low:2};
+ h+='<div class="kanban">';
+ order.forEach((st,i)=>{const items=all.filter(d=>(d.stage||'todo')===st).sort((a,b)=>(pr[a.priority]??1)-(pr[b.priority]??1)||String(a.due||'9').localeCompare(String(b.due||'9')));
+  h+=`<div class="col"><h4>${ol('devStage',st)}<span>${nf(items.length)}</span></h4>`;
+  for(const d of items){const isLate=d.due&&st!=='done'&&d.due<today();
+   h+=`<div class="card" data-edit="dev" data-id="${esc(d.id)}"><h3>${esc(d.title)}</h3><div class="meta">${pill('prio',d.priority)}${d.owner?`<span>👤 ${esc(d.owner)}</span>`:''}${d.due?`<span class="${isLate?'down':''}">📅 ${dateLabel(d.due)}</span>`:''}</div>`;
+   if(can())h+=`<div class="mv">${i>0?`<button data-mv="${esc(d.id)}" data-to="${order[i-1]}">◀</button>`:''}${i<3?`<button data-mv="${esc(d.id)}" data-to="${order[i+1]}">▶</button>`:''}</div>`;
+   h+='</div>'}
+  if(!items.length)h+='<div style="color:var(--mute);font-size:13px;padding:4px">—</div>';
+  h+='</div>'});
+ return h+'</div>';
+}
+
+function bars(rows,key,fmt){
+ if(!rows.length)return`<div style="color:var(--mute);font-size:13px">${t('noData')}</div>`;
+ const r=rows.slice(-12);const max=Math.max(1,...r.map(x=>Number(x[key])||0));
+ const W=560,H=170,bw=W/r.length;let s=`<svg viewBox="0 0 ${W} ${H+34}" width="100%" role="img">`;
+ r.forEach((x,i)=>{const v=Number(x[key])||0;const bh=v/max*(H-22);const last=i===r.length-1;
+  s+=`<rect x="${i*bw+bw*.18}" y="${H-bh}" width="${bw*.64}" height="${Math.max(bh,1)}" rx="4" fill="${last?'#C2410C':'#D8CCB8'}"/>`;
+  if(last||r.length<=6)s+=`<text x="${i*bw+bw/2}" y="${H-bh-6}" text-anchor="middle" font-size="12" fill="#1B1A17" font-weight="600">${fmt(v)}</text>`;
+  s+=`<text x="${i*bw+bw/2}" y="${H+18}" text-anchor="middle" font-size="11" fill="#857E72">${t('months')[+x.month.slice(5)-1]}</text>`});
+ return s+'</svg>';
+}
+function vBiz(){
+ const rows=sortedMetrics();const Lm=rows[rows.length-1]||{},Pm=rows[rows.length-2]||{};
+ const delta=(k,f=nf)=>{if(Pm[k]==null||Lm[k]==null)return'';const d=(Number(Lm[k])||0)-(Number(Pm[k])||0);return`<span class="${d>=0?'up':'down'}">${d>=0?'▲':'▼'} ${f(Math.abs(d))}</span> ${t('vsPrev')}`};
+ const churnRate=Pm.active?((Number(Lm.churned)||0)/Number(Pm.active)*100):null;const demoRate=Lm.leads?((Number(Lm.demos)||0)/Number(Lm.leads)*100):null;
+ let h=`<div class="row"><h2>${t('biz')}${Lm.month?` <span style="font-size:14px;color:var(--mute);font-weight:500">· ${t('latest')}: ${monthLabel(Lm.month)}</span>`:''}</h2><button class="btn" data-new="metrics"${dis()}>${t('newMonth')}</button></div>`;
+ h+=`<div class="kpis"><div class="kpi"><div class="l">${t('active')}</div><div class="v">${nf(Lm.active)}</div><div class="d">${delta('active')}</div></div>
+ <div class="kpi"><div class="l">MRR</div><div class="v">${tk(Lm.mrr)}</div><div class="d">${delta('mrr',tk)}</div></div>
+ <div class="kpi"><div class="l">${t('newThis')}</div><div class="v up">${nf(Lm.newPaid)}</div><div class="d">${t('left')} ${nf(Lm.churned)}${churnRate!=null?` · ${t('churn')} ${pct(churnRate)}`:''}</div></div>
+ <div class="kpi"><div class="l">${t('orders')}</div><div class="v">${nf(Lm.orders)}</div><div class="d">${delta('orders')}</div></div>
+ <div class="kpi"><div class="l">${t('leadDemo')}</div><div class="v">${nf(Lm.leads)} → ${nf(Lm.demos)}</div><div class="d">${demoRate!=null?`${t('demoRate')} ${pct(demoRate)}`:''}</div></div></div>`;
+ h+=targetsSection(rows);
+ if(!loaded.metrics)return h+loadingNote('metrics');
+ if(!rows.length)return h+`<div class="empty">${t('noMetrics')}</div>`;
+ h+=`<div class="charts"><div class="chart"><h4>${t('active')}</h4>${bars(rows,'active',nf)}</div><div class="chart"><h4>MRR</h4>${bars(rows,'mrr',v=>v>=100000?nf((v/100000).toFixed(1))+t('lakh'):nf(v))}</div><div class="chart"><h4>${t('orders')}</h4>${bars(rows,'orders',nf)}</div></div>`;
+ h+=`<div class="tw"><table><tr><th>${t('thMonth')}</th><th class="num">${t('thActive')}</th><th class="num">${t('thNew')}</th><th class="num">${t('thLeft')}</th><th class="num">MRR</th><th class="num">${t('thOrders')}</th><th class="num">${t('thLeads')}</th><th class="num">${t('thDemos')}</th><th>${t('thNote')}</th></tr>`;
+ for(const r of [...rows].reverse())h+=`<tr class="click" data-edit="metrics" data-id="${esc(r.id)}"><td>${monthLabel(r.month)}</td><td class="num">${nf(r.active)}</td><td class="num">${nf(r.newPaid)}</td><td class="num">${nf(r.churned)}</td><td class="num">${tk(r.mrr)}</td><td class="num">${nf(r.orders)}</td><td class="num">${nf(r.leads)}</td><td class="num">${nf(r.demos)}</td><td>${esc(r.note||'')}</td></tr>`;
+ return h+'</table></div>';
+}
+
+const TG_START='2026-12';
+const tgMonths=()=>{const out=[];let [y,m]=TG_START.split('-').map(Number);for(let i=0;i<12;i++){out.push(`${y}-${String(m).padStart(2,'0')}`);m++;if(m>12){m=1;y++}}return out};
+const BASE={newPaid:[9,10,18,28,27,32,32,32,32,38,44,48],active:[9,19,36,63,87,116,143,169,194,224,259,297],mrr:[13500,28500,54000,94500,130500,174000,214500,253500,291000,336000,388500,445500]};
+function targetsSection(rows){
+ const ms=tgMonths();const act={};rows.forEach(r=>act[r.month]=r);const cur=thisMonth();
+ const T=S.targets||{};const has=ms.some(m=>T[m]&&T[m].newPaid!=null);
+ let h=`<div class="sec-title"><span class="sp">${t('tgTitle')} <span style="font-size:13px;color:var(--mute);font-weight:500">· ${t('tgRange')}</span></span><button class="btn ghost" id="tgEdit"${dis()}>${t('tgSet')}</button></div>`;
+ if(!loaded.targets)return h+loadingNote('targets');
+ if(!has)return h+`<div class="empty" style="margin-bottom:18px">${t('tgNoTarget')}</div>`;
+ const tot=ms.reduce((a,m)=>a+(Number(T[m]?.newPaid)||0),0);
+ const past=ms.filter(m=>m<=cur);
+ const doneSales=ms.reduce((a,m)=>a+(Number(act[m]?.newPaid)||0),0);
+ const tgtToDate=past.reduce((a,m)=>a+(Number(T[m]?.newPaid)||0),0);
+ const actToDate=past.reduce((a,m)=>a+(Number(act[m]?.newPaid)||0),0);
+ const ptd=tgtToDate?actToDate/tgtToDate*100:null;
+ const inRange=ms.includes(cur);const thisT=T[cur]?.newPaid,thisA=act[cur]?.newPaid;
+ h+=`<div class="kpis"><div class="kpi"><div class="l">${t('tgYear')}</div><div class="v">${nf(tot)}</div><div class="d">${t('tgDone')}: ${nf(doneSales)}</div><div class="bar"><i style="width:${tot?Math.min(100,doneSales/tot*100):0}%"></i></div></div>
+ <div class="kpi"><div class="l">${t('tgToDate')}</div><div class="v ${ptd==null?'':ptd>=100?'up':'down'}">${ptd==null?'—':pct(ptd)}</div><div class="d">${nf(actToDate)} / ${nf(tgtToDate)} · ${t('tgToDateD')}</div></div>
+ <div class="kpi"><div class="l">${t('tgThis')} (${monthLabel(cur)})</div><div class="v">${inRange&&thisA!=null?nf(thisA):'—'} / ${inRange&&thisT!=null?nf(thisT):'—'}</div><div class="d">${t('tgActual')} / ${t('tgTarget')}</div></div></div>`;
+ const W=720,H=190,bw=W/12;const max=Math.max(1,...ms.map(m=>Math.max(Number(T[m]?.newPaid)||0,Number(act[m]?.newPaid)||0)));
+ let s=`<svg viewBox="0 0 ${W} ${H+36}" width="100%" role="img" aria-label="${t('tgTitle')}">`;
+ ms.forEach((m,i)=>{const tv=Number(T[m]?.newPaid)||0,av=act[m]?.newPaid;const x=i*bw;
+  const th=tv/max*(H-24),ah=(Number(av)||0)/max*(H-24);
+  s+=`<rect x="${x+bw*.14}" y="${H-th}" width="${bw*.34}" height="${Math.max(th,1)}" rx="3" fill="#D8CCB8"/>`;
+  if(av!=null)s+=`<rect x="${x+bw*.52}" y="${H-ah}" width="${bw*.34}" height="${Math.max(ah,1)}" rx="3" fill="${(Number(av)||0)>=tv?'#2F7D4F':'#C2410C'}"/>`;
+  s+=`<text x="${x+bw*.31}" y="${H-th-5}" text-anchor="middle" font-size="10.5" fill="#857E72">${nf(tv)}</text>`;
+  if(av!=null)s+=`<text x="${x+bw*.69}" y="${H-ah-5}" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1B1A17">${nf(av)}</text>`;
+  s+=`<text x="${x+bw/2}" y="${H+16}" text-anchor="middle" font-size="11" fill="${m===cur?'#C2410C':'#857E72'}" font-weight="${m===cur?700:400}">${t('months')[+m.slice(5)-1]}</text>`;
+  s+=`<text x="${x+bw/2}" y="${H+30}" text-anchor="middle" font-size="9.5" fill="#A39C90">${yr(m.slice(0,4))}</text>`});
+ s+='</svg>';
+ h+=`<div class="chart" style="margin-bottom:12px"><h4>${t('tgNewSales')}: <span style="color:#C9BCA5">■</span> ${t('tgTarget')} &nbsp; <span style="color:#2F7D4F">■</span> / <span style="color:#C2410C">■</span> ${t('tgActual')}</h4>${s}</div>`;
+ let cumT=0,cumA=0;
+ h+=`<div class="tw" style="margin-bottom:6px"><table><tr><th>${t('thMonth')}</th><th class="num">${t('tgNewSales')}: ${t('tgTarget')}</th><th class="num">${t('tgActual')}</th><th class="num">${t('tgPct')}</th><th class="num">${t('tgCum')}</th><th class="num">${t('tgActiveT')}: ${t('tgTarget')} / ${t('tgActual')}</th><th class="num">MRR: ${t('tgTarget')} / ${t('tgActual')}</th><th></th></tr>`;
+ for(const m of ms){const tg=T[m]||{},a=act[m];cumT+=Number(tg.newPaid)||0;if(a)cumA+=Number(a.newPaid)||0;
+  const p=a&&tg.newPaid?(Number(a.newPaid)||0)/tg.newPaid*100:null;
+  const st=a?(p!=null&&p>=100?`<span class="pill p-done">${t('tgAhead')}</span>`:`<span class="pill p-risk">${t('tgBehind')}</span>`):m>cur?`<span class="pill p-todo">${t('tgFuture')}</span>`:'';
+  h+=`<tr${m===cur?' style="font-weight:600;background:#FBF4EA"':''}><td>${monthLabel(m)}</td><td class="num">${tg.newPaid!=null?nf(tg.newPaid):'—'}</td><td class="num">${a?nf(a.newPaid):'—'}</td><td class="num ${p==null?'':p>=100?'up':'down'}">${p!=null?pct(p):'—'}</td><td class="num">${a||m<=cur?nf(cumA):'—'} / ${nf(cumT)}</td><td class="num">${tg.active!=null?nf(tg.active):'—'} / ${a?nf(a.active):'—'}</td><td class="num">${tg.mrr!=null?tk(tg.mrr):'—'} / ${a?tk(a.mrr):'—'}</td><td>${st}</td></tr>`}
+ h+=`</table></div><p style="font-size:13px;color:var(--mute);margin-bottom:18px">${t('tgHelp')}</p>`;
+ return h;
+}
+function openTargets(){
+ if(!can()){toast(t('readOnlyToast'));return}
+ const ms=tgMonths();const T=S.targets||{};
+ let h=`<h3>${t('tgModal')} · ${t('tgRange')}</h3><form id="tgf"><div class="tw" style="max-height:60vh;overflow:auto"><table><tr><th>${t('thMonth')}</th><th>${t('tgSales')}</th><th>${t('tgAct')}</th><th>${t('tgMrr')}</th></tr>`;
+ ms.forEach(m=>{const v=T[m]||{};h+=`<tr><td style="white-space:nowrap">${monthLabel(m)}</td>${['newPaid','active','mrr'].map(k=>`<td><input type="number" min="0" step="any" name="${m}|${k}" value="${v[k]??''}" style="min-width:90px"></td>`).join('')}</tr>`});
+ h+=`</table></div><div class="mf"><button type="button" class="btn ghost" id="tgBase" style="margin-right:auto">${t('tgFill')}</button><button type="button" class="btn ghost" id="cancel">${t('cancel')}</button><button class="btn" id="save">${t('save')}</button></div></form>`;
+ $('#modal').innerHTML=h;$('#modal').style.maxWidth='700px';$('#ov').classList.add('show');
+ $('#cancel').onclick=closeForm;
+ $('#tgBase').onclick=()=>{ms.forEach((m,i)=>['newPaid','active','mrr'].forEach(k=>{document.querySelector(`[name="${m}|${k}"]`).value=BASE[k][i]}))};
+ $('#tgf').onsubmit=async e=>{e.preventDefault();const fd=new FormData(e.target);const months={};
+  ms.forEach(m=>{months[m]={};['newPaid','active','mrr'].forEach(k=>{const v=fd.get(`${m}|${k}`);months[m][k]=v===''?null:Number(v)})});
+  const b=$('#save');b.disabled=true;b.textContent=t('saving');
+  try{await db.doc('targets/plan').set(stamp({start:TG_START,months}));closeForm();toast(t('saved'))}catch(err){handleErr(err);b.disabled=false;b.textContent=t('save')}};
+}
+
+function vResearch(){
+ const tabs=[['methods','rMethods'],['interviews','rInterviews'],['competitors','rComp'],['sources','rSources'],['swot','rSwot']];
+ let h=`<div class="row"><h2>${t('research')}</h2><div class="seg">${tabs.map(([k,l])=>`<button data-res="${k}" class="${resTab===k?'on':''}">${t(l)}</button>`).join('')}</div></div>`;
+ if(resTab==='methods'){
+  h+=`<div class="row"><p style="color:var(--mute);font-size:14px;margin-right:auto">${t('rMethodsHelp')}</p><button class="btn" data-new="rmethods"${dis()}>${t('newMethod')}</button></div>`;
+  if(!loaded.rmethods)return h+loadingNote('rmethods');
+  const list=[...S.rmethods].sort((a,b)=>(a.order??100)-(b.order??100));
+  const dn=list.filter(m=>m.status==='done').length;
+  h+=`<div class="kpis"><div class="kpi"><div class="l">${t('fAll')}</div><div class="v">${nf(list.length)}</div></div><div class="kpi"><div class="l">${ol('mStatus','doing')}</div><div class="v">${nf(list.filter(m=>m.status==='doing').length)}</div></div><div class="kpi"><div class="l">${ol('mStatus','done')}</div><div class="v up">${nf(dn)}</div><div class="bar"><i style="width:${list.length?dn/list.length*100:0}%"></i></div></div></div>`;
+  if(!list.length)return h+`<div class="empty">—</div>`;
+  h+='<div class="grid">';for(const m of list)h+=`<div class="card" data-edit="rmethods" data-id="${esc(m.id)}"><h3>${esc(loc2(m,'name'))}</h3><div class="meta">${pill('mStatus',m.status)}${m.owner?`<span>👤 ${esc(m.owner)}</span>`:''}</div>${m.how?`<div class="note">${esc(m.how)}</div>`:''}${m.learned?`<div class="note" style="border-left:3px solid var(--ok);padding-left:8px"><b>✓</b> ${esc(m.learned)}</div>`:''}</div>`;
+  return h+'</div>';
+ }
+ if(resTab==='interviews'){
+  h+=`<div class="row"><span style="margin-right:auto"></span><button class="btn" data-new="interviews"${dis()}>${t('newInterview')}</button></div>`;
+  const iv=S.interviews;const avgOf=k=>{const a=iv.map(x=>Number(x[k])).filter(x=>x>0);return a.length?a.reduce((p,c)=>p+c,0)/a.length:null};
+  const paper=iv.filter(x=>x.system==='paper'||x.system==='excel').length;const hot=iv.filter(x=>Number(x.interest)>=4).length;
+  const wtp=avgOf('wtp'),ds=avgOf('deliverySpend');
+  h+=`<div class="kpis"><div class="kpi"><div class="l">${t('ivCount')}</div><div class="v">${nf(iv.length)}</div></div><div class="kpi"><div class="l">${t('ivPaper')}</div><div class="v">${iv.length?pct(paper/iv.length*100):'—'}</div><div class="d">${nf(paper)} / ${nf(iv.length)}</div></div><div class="kpi"><div class="l">${t('ivHot')}</div><div class="v up">${nf(hot)}</div></div><div class="kpi"><div class="l">${t('ivWtp')}</div><div class="v">${wtp!=null?tk(wtp):'—'}</div></div><div class="kpi"><div class="l">${t('ivDel')}</div><div class="v">${ds!=null?tk(ds):'—'}</div></div></div>`;
+  if(!loaded.interviews)return h+loadingNote('interviews');
+  if(!iv.length)return h+`<div class="empty">${t('noIv')}</div>`;
+  const pc={};iv.forEach(x=>String(x.pains||'').split(/[,،;।]/).map(s=>s.trim()).filter(Boolean).forEach(p=>{const k=p.toLowerCase();pc[k]=pc[k]||{p,n:0};pc[k].n++}));
+  const top=Object.values(pc).sort((a,b)=>b.n-a.n).slice(0,8);
+  if(top.length){const mx=top[0].n;h+=`<div class="chart" style="margin-bottom:14px"><h4>${t('topPains')}</h4>${top.map(x=>`<div style="display:flex;align-items:center;gap:10px;margin:6px 0"><span style="width:220px;font-size:14px">${esc(x.p)}</span><div class="bar" style="flex:1;margin:0;height:10px"><i style="width:${x.n/mx*100}%"></i></div><span class="num" style="width:40px;font-size:14px">${nf(x.n)}</span></div>`).join('')}</div>`}
+  h+=`<div class="tw"><table><tr><th>${t('thRest')}</th><th>${t('thArea')}</th><th class="num">${t('thSeats')}</th><th>${t('thSys')}</th><th>${t('thPain')}</th><th class="num">${t('thWtp')}</th><th>${t('thInt')}</th><th>${t('thDate')}</th></tr>`;
+  for(const x of [...iv].sort((a,b)=>String(b.date).localeCompare(String(a.date))))h+=`<tr class="click" data-edit="interviews" data-id="${esc(x.id)}"><td><b>${esc(x.restaurant)}</b></td><td>${esc([x.area,x.city].filter(Boolean).join(', '))}</td><td class="num">${x.seats!=null?nf(x.seats):''}</td><td>${esc(ol('sys',x.system))}</td><td>${esc(x.pains||'')}</td><td class="num">${x.wtp!=null?tk(x.wtp):''}</td><td>${x.interest?nf(x.interest)+'/'+nf(5):''}</td><td>${dateLabel(x.date)}</td></tr>`;
+  return h+'</table></div>';
+ }
+ if(resTab==='competitors'){
+  h+=`<div class="row"><span style="margin-right:auto"></span><button class="btn" data-new="competitors"${dis()}>${t('newComp')}</button></div>`;
+  if(!loaded.competitors)return h+loadingNote('competitors');
+  if(!S.competitors.length)return h+`<div class="empty">—</div>`;
+  h+=`<div class="tw"><table><tr><th>${t('thName')}</th><th>${t('thType')}</th><th>${t('thPrice')}</th><th>${t('thCity')}</th><th>${t('thStr')}</th><th>${t('thWeak')}</th></tr>`;
+  for(const c of [...S.competitors].sort((a,b)=>String(a.type).localeCompare(String(b.type))||String(a.name).localeCompare(String(b.name))))h+=`<tr class="click" data-edit="competitors" data-id="${esc(c.id)}"><td><b>${esc(c.name)}</b></td><td>${esc(ol('compType',c.type))}</td><td>${esc(c.price||'')}</td><td>${esc(c.city||'')}</td><td>${esc(c.strengths||'')}</td><td>${esc(c.weaknesses||'')}</td></tr>`;
+  return h+'</table></div>';
+ }
+ if(resTab==='sources'){
+  h+=`<div class="row"><span style="margin-right:auto"></span><button class="btn" data-new="sources"${dis()}>${t('newSource')}</button></div>`;
+  if(!loaded.sources)return h+loadingNote('sources');
+  if(!S.sources.length)return h+`<div class="empty">—</div>`;
+  h+='<div class="grid">';
+  for(const s of [...S.sources].sort((a,b)=>String(b.date).localeCompare(String(a.date))))h+=`<div class="card" data-edit="sources" data-id="${esc(s.id)}"><h3>${esc(s.title)}</h3><div class="meta">${s.tag?`<span class="pill p-vio">${esc(s.tag)}</span>`:''}<span>${dateLabel(s.date)}</span>${/^https?:\/\//.test(s.url||'')?`<a href="${esc(s.url)}" target="_blank" rel="noopener" data-stop="1">${t('open')} ↗</a>`:''}</div>${s.finding?`<div class="note">${esc(s.finding)}</div>`:''}</div>`;
+  return h+'</div>';
+ }
+ // swot
+ if(!loaded.swot)return h+loadingNote('swot');
+ h+='<div class="swot">';
+ for(const [q,lk] of [['s','sS'],['w','sW'],['o','sO'],['t','sT']]){
+  const items=S.swot.filter(x=>x.quad===q);
+  h+=`<div class="q ${q}"><h4>${t(lk)}<button class="mini" data-swot="${q}"${dis()}>${t('add')}</button></h4><ul>${items.map(x=>`<li data-edit="swot" data-id="${esc(x.id)}">${esc(loc2(x,'text'))}</li>`).join('')||'<li style="list-style:none;color:var(--mute);margin-left:0">—</li>'}</ul></div>`;
+ }
+ return h+'</div>';
+}
+
+function vHR(){
+ let h=`<div class="row"><h2>${t('hrAcc')}</h2><div class="seg"><button data-hr="accounts" class="${hrTab==='accounts'?'on':''}">${t('accounts')}</button><button data-hr="hr" class="${hrTab==='hr'?'on':''}">${t('hr')}</button></div>`;
+ const active=S.people.filter(p=>p.status!=='left');const payroll=active.reduce((a,p)=>a+(Number(p.salary)||0),0);
+ if(hrTab==='accounts'){
+  const f=finance();
+  h+=`<button class="btn" data-new="txns"${dis()}>${t('newTx')}</button></div>`;
+  h+=`<div class="kpis"><div class="kpi"><div class="l">${t('cashL')}</div><div class="v ${f.cash<0?'down':''}">${tk(f.cash)}</div><div class="d">${t('cashD')}</div></div>
+  <div class="kpi"><div class="l">${t('inThis')}</div><div class="v up">${tk(f.mi)}</div></div>
+  <div class="kpi"><div class="l">${t('outThis')}</div><div class="v down">${tk(f.mo)}</div><div class="d">${t('net')} ${tk(f.mi-f.mo)}</div></div>
+  <div class="kpi"><div class="l">${t('runway')}</div><div class="v ${f.runway!=null&&f.runway<3?'down':''}">${f.runway!=null?nf(f.runway.toFixed(1))+' '+t('months_'):'—'}</div><div class="d">${t('avgOut')} ${tk(f.burn)}</div></div></div>`;
+  h+=`<div class="inline" style="margin-bottom:14px"><span style="color:var(--mute);font-size:14px">${t('openCash')}</span><input type="number" id="openCash" value="${esc(S.settings.openingCash??'')}"${dis()}><button class="btn ghost" id="saveOpen"${dis()}>${t('update')}</button><span style="margin-left:auto;color:var(--mute);font-size:14px">${t('monthL')}</span><select id="txMonth" style="width:160px"><option value="all">${t('allMonths')}</option>${[...new Set(S.txns.map(x=>(x.date||'').slice(0,7)).filter(Boolean))].sort().reverse().map(k=>`<option value="${k}"${k===txMonth?' selected':''}>${monthLabel(k)}</option>`).join('')}</select></div>`;
+  if(!loaded.txns)return h+loadingNote('txns');
+  const list=S.txns.filter(x=>txMonth==='all'||(x.date||'').startsWith(txMonth)).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  if(!list.length)return h+`<div class="empty">${t('noTx')}</div>`;
+  const cat={};list.filter(x=>x.kind!=='in').forEach(x=>{const k=ol('txCat',x.category||'অন্যান্য');cat[k]=(cat[k]||0)+(Number(x.amount)||0)});
+  const tot=Object.values(cat).reduce((a,b)=>a+b,0);
+  if(tot>0){h+=`<div class="chart" style="margin-bottom:14px"><h4>${t('byCat')}</h4>`;for(const [k,v] of Object.entries(cat).sort((a,b)=>b[1]-a[1]))h+=`<div style="display:flex;align-items:center;gap:10px;margin:6px 0"><span style="width:150px;font-size:14px">${esc(k)}</span><div class="bar" style="flex:1;margin:0;height:10px"><i style="width:${v/tot*100}%"></i></div><span class="num" style="width:120px;font-size:14px">${tk(v)}</span></div>`;h+='</div>'}
+  h+=`<div class="tw"><table><tr><th>${t('thDate')}</th><th>${t('thCat')}</th><th>${t('thDesc')}</th><th class="num">${t('thIn')}</th><th class="num">${t('thOut')}</th></tr>`;
+  for(const x of list)h+=`<tr class="click" data-edit="txns" data-id="${esc(x.id)}"><td>${dateLabel(x.date)}</td><td>${esc(ol('txCat',x.category))}</td><td>${esc(x.note||'')}</td><td class="num up">${x.kind==='in'?tk(x.amount):''}</td><td class="num down">${x.kind!=='in'?tk(x.amount):''}</td></tr>`;
+  return h+'</table></div>';
+ }
+ h+=`<button class="btn" data-new="people"${dis()}>${t('newPerson')}</button></div>`;
+ const prob=S.people.filter(p=>p.status==='probation').length;
+ h+=`<div class="kpis"><div class="kpi"><div class="l">${t('activeTeam')}</div><div class="v">${nf(active.length)}</div><div class="d">${t('onProb')} ${nf(prob)}</div></div><div class="kpi"><div class="l">${t('payroll')}</div><div class="v">${tk(payroll)}</div></div><div class="kpi"><div class="l">${t('gone')}</div><div class="v">${nf(S.people.length-active.length)}</div></div></div>`;
+ if(!loaded.people)return h+loadingNote('people');
+ if(!S.people.length)return h+`<div class="empty">${t('noPeople')}</div>`;
+ const ord={active:0,probation:1,left:2};
+ h+=`<div class="tw"><table><tr><th>${t('thName')}</th><th>${t('thRole')}</th><th>${t('thZone')}</th><th>${t('thJoin')}</th><th class="num">${t('thSal')}</th><th>${t('thStatus')}</th></tr>`;
+ for(const p of [...S.people].sort((a,b)=>(ord[a.status]??0)-(ord[b.status]??0)||String(a.name).localeCompare(String(b.name))))h+=`<tr class="click" data-edit="people" data-id="${esc(p.id)}"><td><b>${esc(p.name)}</b></td><td>${esc(p.role||'')}</td><td>${esc(p.city||'')}</td><td>${dateLabel(p.joined)}</td><td class="num">${tk(p.salary)}</td><td>${pill('pStatus',p.status)}</td></tr>`;
+ return h+'</table></div>';
+}
+
+function bind(el){
+ el.querySelectorAll('[data-plan]').forEach(b=>b.onclick=()=>{planTab=b.dataset.plan;render()});
+ el.querySelectorAll('[data-hr]').forEach(b=>b.onclick=()=>{hrTab=b.dataset.hr;render()});
+ el.querySelectorAll('[data-res]').forEach(b=>b.onclick=()=>{resTab=b.dataset.res;render()});
+ el.querySelectorAll('[data-ff]').forEach(b=>b.onclick=()=>{fFilter=b.dataset.ff;render()});
+ el.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{location.hash=b.dataset.go});
+ el.querySelectorAll('[data-new]').forEach(b=>b.onclick=()=>openForm(b.dataset.new));
+ el.querySelectorAll('[data-swot]').forEach(b=>b.onclick=()=>openForm('swot',null,{quad:b.dataset.swot}));
+ el.querySelectorAll('[data-edit]').forEach(c=>c.onclick=e=>{if(e.target.closest('[data-mv],[data-stop]'))return;e.stopPropagation();const it=S[c.dataset.edit].find(x=>x.id===c.dataset.id);if(it)openForm(c.dataset.edit,it)});
+ el.querySelectorAll('[data-mv]').forEach(b=>b.onclick=e=>{e.stopPropagation();quick('dev',b.dataset.mv,{stage:b.dataset.to})});
+ el.querySelectorAll('[data-vote]').forEach(b=>b.onclick=()=>vote(b.dataset.vote,b.dataset.c));
+ el.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>sendFeature(b.dataset.send,b.dataset.to));
+ const tge=el.querySelector('#tgEdit');if(tge)tge.onclick=openTargets;
+ const tm=el.querySelector('#txMonth');if(tm)tm.onchange=()=>{txMonth=tm.value;render()};
+ const so=el.querySelector('#saveOpen');if(so)so.onclick=async()=>{const v=Number(el.querySelector('#openCash').value)||0;if(v===Number(S.settings.openingCash||0))return;try{await db.doc('settings/main').set(stamp({...S.settings,openingCash:v}));toast(t('updated'))}catch(e){handleErr(e)}};
+}
+document.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem('ostisk-lang',lang)}catch{};render()});
+window.addEventListener('hashchange',render);
+
+/* ================= data ================= */
+let mode='';// 'cloud' (claude.ai db) | 'local' (Excel / browser)
+function subscribe(){
+ const pending=new Set([...COLLS,'settings']);
+ const timer=setTimeout(()=>{if(pending.size)banner('slow')},10000);
+ const doneOne=k=>{pending.delete(k);if(!pending.size){clearTimeout(timer);if(bannerKey==='slow')banner('')}};
+ COLLS.forEach(c=>db.collection(c).onSnapshot(s=>{S[c]=s.docs.map(d=>({id:d.id,...d.data()}));loaded[c]=true;if(!s.metadata.fromCache)doneOne(c);render()},()=>{loaded[c]=true;doneOne(c);render()}));
+ db.doc('settings/main').onSnapshot(s=>{S.settings=s.exists?{...s.data()}:{};if(!s.metadata.fromCache)doneOne('settings');render()},()=>doneOne('settings'));
+ db.doc('targets/plan').onSnapshot(s=>{S.targets=s.exists?{...(s.data().months||{})}:{};loaded.targets=true;render()},()=>{loaded.targets=true;render()});
+}
+
+/* ---------- local (Excel) database: same API as the claude.ai db, kept in this browser ---------- */
+const LS_KEY='ostisk-local-v1';
+const newId=()=>'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const clone=o=>o==null?o:JSON.parse(JSON.stringify(o));
+function emptyStore(){const c={};COLLS.forEach(k=>c[k]={});return{colls:c,docs:{},users:{},dirty:false,srcHash:null}}
+function loadStore(){try{const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');if(s&&s.colls){COLLS.forEach(k=>s.colls[k]=s.colls[k]||{});s.docs=s.docs||{};s.users=s.users||{};return s}}catch{}return emptyStore()}
+const storeHasData=s=>COLLS.some(k=>Object.keys(s.colls[k]||{}).length)||Object.keys(s.docs||{}).length>0;
+function makeLocalDb(store){
+ const subs={};
+ const persist=()=>{try{localStorage.setItem(LS_KEY,JSON.stringify(store))}catch{}};
+ const isDoc=k=>k.includes('/');
+ const snap=k=>isDoc(k)?{exists:k in store.docs,data:()=>clone(store.docs[k]||{}),metadata:{fromCache:false}}
+  :{docs:Object.entries(store.colls[k]||{}).map(([id,o])=>({id,data:()=>clone(o)})),metadata:{fromCache:false}};
+ const emit=k=>(subs[k]||[]).forEach(cb=>{try{cb(snap(k))}catch(e){console.error(e)}});
+ const changed=k=>{store.dirty=true;persist();setTimeout(()=>emit(k),0)};
+ const on=(k,cb)=>{(subs[k]=subs[k]||[]).push(cb);setTimeout(()=>cb(snap(k)),0);return()=>{subs[k]=subs[k].filter(x=>x!==cb)}};
+ const merge=(a,b)=>{const o={...a};for(const[k,v]of Object.entries(b)){o[k]=(v&&typeof v==='object'&&!Array.isArray(v)&&a[k]&&typeof a[k]==='object')?merge(a[k],v):v}return o};
+ const docRef=(c,id)=>({id,
+  set:async o=>{store.colls[c][id]=clone(o);changed(c)},
+  update:async p=>{const cur=store.colls[c][id];if(!cur)throw{code:'not_found'};store.colls[c][id]=merge(cur,clone(p));changed(c)},
+  delete:async()=>{delete store.colls[c][id];changed(c)}});
+ return{local:true,get store(){return store},
+  collection:c=>{store.colls[c]=store.colls[c]||{};return{doc:id=>docRef(c,id||newId()),onSnapshot:cb=>on(c,cb)}},
+  doc:p=>({set:async o=>{store.docs[p]=clone(o);changed(p)},update:async q=>{store.docs[p]=merge(store.docs[p]||{},clone(q));changed(p)},onSnapshot:cb=>on(p,cb)}),
+  load(D,{replace=true,dirty=false,srcHash=null}={}){
+   if(replace){const e=emptyStore();store.colls=e.colls;store.docs={};store.users={}}
+   for(const c of COLLS)if(D.colls[c])for(const o of D.colls[c]){const{id,...r}=o;store.colls[c][id]=r}
+   if(D.targets)store.docs['targets/plan']={start:TG_START,months:replace?D.targets:{...(store.docs['targets/plan']?.months||{}),...D.targets}};
+   if(D.settings)store.docs['settings/main']=replace?D.settings:{...(store.docs['settings/main']||{}),...D.settings};
+   if(D.users)Object.assign(store.users,D.users);
+   store.dirty=dirty;if(srcHash!==undefined)store.srcHash=srcHash;persist();
+   [...COLLS,'settings/main','targets/plan'].forEach(emit)}
+ };
+}
+
+/* ---------- Excel format (one sheet per section; row 1 = field keys) ---------- */
+const EXTRA={features:['votes','planRef','devRef'],goals:['featureId'],dev:['featureId']};
+const TAIL=['updatedAt','updatedBy'];
+const SCHEMA=Object.fromEntries(COLLS.map(c=>[c,['id',...FORMS[c].fields.map(f=>f.k),...(EXTRA[c]||[])]]));
+const SHEET_LABEL={goals:'প্ল্যানিং — লক্ষ্য',dev:'ডেভেলপমেন্ট কাজ',metrics:'মাসিক বিজনেস ডেটা',txns:'লেনদেন (অ্যাকাউন্টস)',people:'টিম (এইচআর)',features:'ফিচার রোডম্যাপ ও ভোট',rmethods:'রিসার্চ পদ্ধতি',interviews:'ইন্টারভিউ ও সার্ভে',competitors:'প্রতিযোগী',sources:'ডেস্ক রিসার্চ ও সূত্র',swot:'SWOT',targets:'সেলস টার্গেট (মাসিক)',settings:'সেটিংস (শুরুর ক্যাশ)',users:'ভোটারদের নাম (আইডি → নাম)'};
+function fieldType(c,k){if(k==='votes')return'json';const f=FORMS[c]?.fields.find(x=>x.k===k);return f?f.t:'text'}
+let xlsxP=null;
+function ensureXLSX(){
+ if(window.XLSX)return Promise.resolve(window.XLSX);
+ if(xlsxP)return xlsxP;
+ const urls=['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js','https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js'];
+ xlsxP=(async()=>{for(const u of urls){try{await new Promise((ok,no)=>{const s=document.createElement('script');s.src=u;s.onload=ok;s.onerror=no;document.head.appendChild(s)});if(window.XLSX)return window.XLSX}catch{}}xlsxP=null;throw new Error('xlsx')})();
+ return xlsxP;
+}
+const bnDigits=s=>String(s).replace(/[০-৯]/g,d=>'০১২৩৪৫৬৭৮৯'.indexOf(d));
+const serialToISO=v=>new Date(Math.round((v-25569)*864e5)).toISOString();
+function cellVal(c,k,v){
+ const tp=fieldType(c,k);
+ if(v instanceof Date)v=v.toISOString();
+ if(tp==='number'){if(v===''||v==null)return null;if(typeof v==='number')return v;const n=Number(bnDigits(v).replace(/[,\s৳]/g,''));return isNaN(n)?null:n}
+ if(tp==='date'){if(typeof v==='number')return serialToISO(v).slice(0,10);return String(v??'').trim().slice(0,10)}
+ if(tp==='month'){if(typeof v==='number')return serialToISO(v).slice(0,7);return String(v??'').trim().slice(0,7)}
+ if(tp==='json'){if(!v)return{};try{const o=JSON.parse(v);return o&&typeof o==='object'?o:{}}catch{return{}}}
+ return v==null?'':String(v);
+}
+function fromWorkbook(wb){
+ const byName={};wb.SheetNames.forEach(n=>byName[n.trim().toLowerCase()]=wb.Sheets[n]);
+ const rows=n=>byName[n]?XLSX.utils.sheet_to_json(byName[n],{defval:'',raw:true}).map(r=>{const o={};for(const[k,v]of Object.entries(r))o[String(k).trim()]=v;return o}).filter(r=>Object.values(r).some(v=>v!==''&&v!=null)):null;
+ const D={colls:{},targets:null,settings:null,users:null};let found=0;
+ for(const c of COLLS){const rs=rows(c.toLowerCase());if(!rs)continue;found++;
+  D.colls[c]=rs.map(r=>{const o={};for(const[k,v]of Object.entries(r)){if(!k||k==='id'||k.startsWith('__EMPTY'))continue;if(TAIL.includes(k)){if(v!=='')o[k]=String(v);continue}o[k]=cellVal(c,k,v)}
+   if(c==='features'&&!o.votes)o.votes={};
+   let id=String(r.id??'').trim();if(c==='metrics'){if(!o.month)return null;id=o.month}if(!id)id=newId();return{id,...o}}).filter(Boolean)}
+ const tr=rows('targets');if(tr){found++;D.targets={};tr.forEach(r=>{const m=cellVal('metrics','month',r.month);if(m)D.targets[m]={newPaid:cellVal('metrics','newPaid',r.newPaid),active:cellVal('metrics','active',r.active),mrr:cellVal('metrics','mrr',r.mrr)}})}
+ const sr=rows('settings');if(sr){found++;D.settings={};sr.forEach(r=>{const k=String(r.key||'').trim();if(!k)return;const v=r.value;D.settings[k]=k==='openingCash'?(v===''?null:Number(bnDigits(v).replace(/[,\s৳]/g,''))||0):v})}
+ const ur=rows('users');if(ur){D.users={};ur.forEach(r=>{if(r.id)D.users[String(r.id)]=String(r.name||'')})}
+ if(!found)throw new Error('format');
+ return D;
+}
+async function currentData(){
+ const D={colls:{},targets:{...S.targets},settings:{...S.settings},users:{}};
+ COLLS.forEach(c=>D.colls[c]=S[c].map(x=>clone(x)));
+ const ids=new Set();COLLS.forEach(c=>S[c].forEach(x=>{if(x.updatedBy)ids.add(x.updatedBy);if(x.votes)Object.keys(x.votes).forEach(k=>ids.add(k))}));if(me)ids.add(me);
+ if(user){const miss=[...ids].filter(i=>!(i in names));for(let i=0;i<miss.length;i+=60){try{const p=await user.profiles(miss.slice(i,i+60));miss.slice(i,i+60).forEach(k=>names[k]=p?.[k]?.name||'')}catch{}}}
+ ids.forEach(i=>{if(names[i])D.users[i]=names[i]});
+ delete D.settings.updatedAt;delete D.settings.updatedBy;
+ return D;
+}
+function toWorkbook(D){
+ const wb=XLSX.utils.book_new();
+ const sheet=(name,aoa)=>{const ws=XLSX.utils.aoa_to_sheet(aoa);const w=(aoa[0]||[]).map((_,i)=>Math.max(10,Math.min(60,2+Math.max(...aoa.map(r=>String(r[i]??'').length)))));ws['!cols']=w.map(x=>({wch:x}));XLSX.utils.book_append_sheet(wb,ws,name)};
+ const cnt={};const sheets=[];
+ for(const c of COLLS){const list=D.colls[c]||[];const extra=[...new Set(list.flatMap(o=>Object.keys(o)))].filter(k=>!SCHEMA[c].includes(k)&&!TAIL.includes(k));
+  const cols=[...SCHEMA[c],...extra,...TAIL];
+  sheets.push([c,[cols,...list.map(o=>cols.map(k=>{const v=o[k];return v==null?'':typeof v==='object'?(Object.keys(v).length?JSON.stringify(v):''):v}))]]);cnt[c]=list.length}
+ const tm=Object.keys(D.targets||{}).sort();sheets.push(['targets',[['month','newPaid','active','mrr'],...tm.map(m=>{const v=D.targets[m]||{};return[m,v.newPaid??'',v.active??'',v.mrr??'']})]]);cnt.targets=tm.length;
+ sheets.push(['settings',[['key','value'],['openingCash',D.settings?.openingCash??'']]]);cnt.settings=1;
+ const us=Object.entries(D.users||{});sheets.push(['users',[['id','name'],...us]]);cnt.users=us.length;
+ sheet('README',[['Ostisk ফাউন্ডার কনসোল — ডেটা ফাইল'],[''],['এই ফাইলটি কনসোলের সব ডেটা। কনসোলের "এক্সেল আপলোড" বোতাম দিয়ে এটি আবার তোলা যায়।'],['নিয়ম: প্রতিটি শিটের প্রথম সারির কলামের নাম (ইংরেজি key) বদলাবেন না। নতুন সারি যোগ করতে পারেন — id ফাঁকা রাখলে নিজে থেকে তৈরি হবে।'],['GitHub-এ: index.html-এর পাশে এই ফাইলটি data.xlsx নামে রাখলে পেজ খুললেই ডেটা লোড হবে।'],[''],['শিট','কী আছে','সারি'],...Object.keys(cnt).map(k=>[k,SHEET_LABEL[k]||k,cnt[k]])]);
+ sheets.forEach(([n,a])=>sheet(n,a));
+ return wb;
+}
+async function exportXlsx(){
+ const b=$('#xlOut');b.disabled=true;toast(t('xlLoading'));
+ try{
+  await ensureXLSX();const wb=toWorkbook(await currentData());
+  const buf=XLSX.write(wb,{type:'array',bookType:'xlsx'});const name='data.xlsx';
+  const blob=new Blob([buf],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+  let done=false;
+  if(mode==='cloud'){try{const dl=await claude.use('downloads');if(dl){await dl.save({filename:name,data:blob});done=true}}catch{}}
+  if(!done){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)}
+  toast(mode==='cloud'&&!done&&window.self!==window.top?t('dlBlocked'):t('dlDone'));
+ }catch(e){toast(e?.message==='xlsx'?t('xlFail'):t('saveFail'))}
+ finally{b.disabled=false}
+}
+async function handleFile(file){
+ if(!file)return;
+ if(mode==='cloud'&&!can()){toast(t('readOnlyToast'));return}
+ let D;try{await ensureXLSX();const buf=await file.arrayBuffer();D=fromWorkbook(XLSX.read(buf,{type:'array'}))}catch(e){toast(e?.message==='xlsx'?t('xlFail'):t('impBad'));return}
+ const rowsOf=k=>k==='targets'?Object.keys(D.targets||{}).length:k==='settings'?(D.settings?1:0):(D.colls[k]||[]).length;
+ const keys=[...COLLS.filter(c=>D.colls[c]),...(D.targets?['targets']:[]),...(D.settings?['settings']:[])];
+ const defMode=mode==='cloud'?'merge':'replace';
+ $('#modal').innerHTML=`<h3>${t('impTitle')}</h3><div style="font-size:14px;color:var(--mute)">${esc(file.name)} · ${t('impFound')}</div>
+  <table class="sumtab">${keys.map(k=>`<tr><td>${esc(SHEET_LABEL[k]||k)}</td><td class="num"><b>${nf(rowsOf(k))}</b> ${t('impRows')}</td></tr>`).join('')}</table>
+  <div class="choice"><label><input type="radio" name="im" value="replace"${defMode==='replace'?' checked':''}><span><b>${t('impReplace')}</b><br><span style="color:var(--mute)">${t('impReplaceD')}</span></span></label>
+  <label><input type="radio" name="im" value="merge"${defMode==='merge'?' checked':''}><span><b>${t('impMerge')}</b><br><span style="color:var(--mute)">${t('impMergeD')}</span></span></label></div>
+  <div class="mf"><span class="by"></span><button type="button" class="btn ghost" id="cancel">${t('cancel')}</button><button type="button" class="btn" id="impGo">${t('impGo')}</button></div>`;
+ $('#ov').classList.add('show');$('#cancel').onclick=closeForm;
+ $('#impGo').onclick=async()=>{const replace=document.querySelector('[name=im]:checked').value==='replace';const b=$('#impGo');b.disabled=true;b.textContent=t('saving');
+  try{await applyImport(D,replace);closeForm();toast(t('impDone'))}catch(e){handleErr(e);b.disabled=false;b.textContent=t('impGo')}};
+}
+async function applyImport(D,replace){
+ if(D.users)Object.assign(names,D.users);
+ if(mode==='local'){db.load(D,{replace,dirty:true,srcHash:undefined});if(bannerKey!=='localInfo')banner('localInfo');setupLocalMe();return}
+ const jobs=[];
+ for(const c of COLLS){if(!D.colls[c])continue;const keep=new Set(D.colls[c].map(o=>o.id));
+  if(replace)S[c].forEach(x=>{if(!keep.has(x.id))jobs.push(()=>db.collection(c).doc(x.id).delete())});
+  D.colls[c].forEach(o=>{const{id,...r}=o;jobs.push(()=>db.collection(c).doc(id).set(r))})}
+ if(D.targets)jobs.push(()=>db.doc('targets/plan').set(stamp({start:TG_START,months:replace?D.targets:{...S.targets,...D.targets}})));
+ if(D.settings)jobs.push(()=>db.doc('settings/main').set(stamp(replace?D.settings:{...S.settings,...D.settings})));
+ for(let i=0;i<jobs.length;i+=15)await Promise.all(jobs.slice(i,i+15).map(f=>f()));
+}
+const fnv=buf=>{const a=new Uint8Array(buf);let h=2166136261;for(let i=0;i<a.length;i++){h^=a[i];h=Math.imul(h,16777619)}return(h>>>0).toString(16)+'-'+a.length};
+async function loadServerXlsx(force){
+ if(mode!=='local'||!/^https?:$/.test(location.protocol))return false;
+ try{
+  const r=await fetch('data.xlsx',{cache:'no-store'});if(!r.ok)return false;
+  const buf=await r.arrayBuffer();const h=fnv(buf);const st=db.store;
+  if(!force){if(st.dirty&&storeHasData(st)){if(h!==st.srcHash)banner('localDirty');return true}
+   if(h===st.srcHash&&storeHasData(st))return true}
+  await ensureXLSX();const D=fromWorkbook(XLSX.read(buf,{type:'array'}));
+  if(D.users)Object.assign(names,D.users);
+  db.load(D,{replace:true,dirty:false,srcHash:h});banner('localInfo');setupLocalMe();return true;
+ }catch{return false}
+}
+/* who am I in Excel mode: a name kept in this browser (matches a name in the users sheet when possible) */
+function setupLocalMe(){
+ if(mode!=='local')return;let n='';try{n=localStorage.getItem('ostisk-me')||''}catch{}
+ if(!n){me=null;render();return}
+ const hit=Object.entries(db.store.users||{}).find(([,v])=>v&&v.trim().toLowerCase()===n.trim().toLowerCase());
+ me=hit?hit[0]:'local:'+n.trim();names[me]=n.trim();
+ if(!db.store.users[me]){db.store.users[me]=n.trim();try{localStorage.setItem(LS_KEY,JSON.stringify(db.store))}catch{}}
+ render();
+}
+function askName(){
+ let cur='';try{cur=localStorage.getItem('ostisk-me')||''}catch{}
+ $('#modal').innerHTML=`<h3>${t('nameQ')}</h3><form id="nf"><label style="font-size:13px;color:var(--mute)">${t('yourName')}</label><input id="nmIn" value="${esc(cur)}" required><div class="mf"><span class="by"></span><button type="button" class="btn ghost" id="cancel">${t('cancel')}</button><button class="btn">${t('ok')}</button></div></form>`;
+ $('#ov').classList.add('show');$('#cancel').onclick=closeForm;$('#nmIn').focus();
+ $('#nf').onsubmit=e=>{e.preventDefault();const v=$('#nmIn').value.trim();if(!v)return;try{localStorage.setItem('ostisk-me',v)}catch{}closeForm();setupLocalMe()};
+}
+function renderChrome(){
+ const m=$('#mode');m.textContent=mode==='cloud'?t('modeCloud'):mode==='local'?t('modeLocal'):'';m.className='mode'+(mode==='cloud'?' cloud':'');m.style.display=mode?'':'none';
+ $('#xlOut').textContent=t('xlOut');$('#xlInT').textContent=t('xlIn');
+ if(mode==='local'){const w=$('#who');w.innerHTML=me?`👤 ${esc(names[me]||'')} <button id="chName">✎</button>`:`<button id="chName">${t('setName')}</button>`;$('#chName').onclick=askName}
+}
+$('#xlOut').onclick=exportXlsx;
+$('#xlIn').onchange=e=>{const f=e.target.files[0];e.target.value='';handleFile(f)};
+
+render();
+(async()=>{
+ try{user=await claude.use('user')}catch{}
+ if(user){try{me=await user.id()}catch{}
+  if(me)whoName(me).then(n=>{$('#who').textContent='👤 '+n});
+  try{const w=await user.can('data.write');if(w===false){readOnly=true;banner('noPerm')}}catch{}}
+ try{db=await claude.use('db')}catch{}
+ if(db){mode='cloud';render();subscribe();return}
+ // Excel mode: GitHub Pages, a downloaded copy, or any view without the claude.ai database
+ mode='local';user=null;me=null;readOnly=false;bannerKey='';
+ const store=loadStore();db=makeLocalDb(store);Object.assign(names,store.users||{});
+ banner(storeHasData(store)?'localInfo':'localEmpty');
+ subscribe();setupLocalMe();
+ const got=await loadServerXlsx(false);
+ if(!got&&!storeHasData(db.store))banner('localEmpty');
+})();
+</script>
+</body>
+</html>
